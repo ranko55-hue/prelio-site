@@ -195,6 +195,81 @@
   .foot-links { display: flex; gap: 26px; font-size: 14.5px; color: var(--muted); }
   .foot-links a:hover { color: var(--ink); }
 
+  /* accessibility: skip link + keyboard focus */
+  .skip-link { position: absolute; inset-inline-start: 50%; transform: translateX(-50%) translateY(-140%); top: 10px; z-index: 200; background: var(--indigo); color: #fff; padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: 15px; transition: transform .2s; }
+  .skip-link:focus { transform: translateX(-50%) translateY(0); outline: 2px solid #fff; outline-offset: 2px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible, .chip:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 3px; border-radius: 8px; }
+
+  /* scroll-to-top button */
+  .to-top { position: fixed; inset-block-end: 26px; inset-inline-start: 26px; z-index: 80; width: 50px; height: 50px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.14); background: linear-gradient(135deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9)); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 30px rgba(99,102,241,0.4); opacity: 0; visibility: hidden; transform: translateY(16px); transition: opacity .3s, transform .3s, visibility .3s; backdrop-filter: blur(8px); }
+  .to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  .to-top:hover { transform: translateY(-3px); box-shadow: 0 14px 38px rgba(99,102,241,0.55); }
+
+  /* ===== animated AI demo ===== */
+  .ademo { max-width: 920px; margin: 0 auto; }
+  .ademo-frame { position: relative; background: linear-gradient(160deg, rgba(30,27,50,0.92), rgba(12,11,22,0.96)); border: 1px solid rgba(255,255,255,0.11); border-radius: 22px; box-shadow: 0 30px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07); overflow: hidden; backdrop-filter: blur(10px); }
+  .ademo-bar { display: flex; align-items: center; gap: 7px; padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .ademo-bar .d { width: 11px; height: 11px; border-radius: 50%; }
+  .ademo-bar .d1{background:#ff5f57}.ademo-bar .d2{background:#febc2e}.ademo-bar .d3{background:#28c840}
+  .ademo-bar .ttl { margin-inline-start: 12px; font-size: 13px; color: var(--muted-2); font-weight: 500; }
+  .ademo-bar .live { margin-inline-start: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--green); font-weight: 600; }
+  .ademo-bar .live .ping { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: livepulse 1.6s ease-in-out infinite; }
+  @keyframes livepulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .ademo-stage { position: relative; min-height: 420px; padding: 20px; }
+
+  /* toast */
+  .ademo-toast { position: absolute; top: 16px; inset-inline-end: 16px; inset-inline-start: 16px; margin: 0 auto; max-width: 400px; background: rgba(99,102,241,0.16); border: 1px solid rgba(129,140,248,0.4); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 11px; font-size: 13.5px; font-weight: 600; color: #e6e5f2; box-shadow: 0 12px 30px rgba(0,0,0,0.35); opacity: 0; transform: translateY(-12px); transition: opacity .4s, transform .4s; z-index: 5; backdrop-filter: blur(8px); }
+  .ademo-toast.show { opacity: 1; transform: translateY(0); }
+  .ademo-toast .tic { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(99,102,241,0.3); color: #c7d2fe; }
+  .ademo-toast.green .tic { background: rgba(52,211,153,0.25); color: var(--green); }
+  .ademo-toast.green { background: rgba(52,211,153,0.13); border-color: rgba(52,211,153,0.35); }
+  .ademo-toast.rose .tic { background: var(--rose-dim); color: #fda4b4; }
+  .ademo-toast.rose { background: var(--rose-dim); border-color: rgba(251,90,117,0.35); }
+
+  /* candidate list inside animated demo */
+  .ad-filters { display: flex; gap: 8px; margin: 44px 0 14px; flex-wrap: wrap; }
+  .ad-chip { font-size: 12.5px; font-weight: 600; padding: 7px 13px; border-radius: 18px; background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); transition: all .3s; display: inline-flex; align-items: center; gap: 5px; }
+  .ad-chip.rose { color: #fda4b4; border-color: rgba(251,90,117,0.3); background: var(--rose-dim); }
+  .ad-chip.pulse { animation: chippulse 0.7s ease; }
+  .ad-chip.active-rose { background: var(--rose); color: #fff; border-color: transparent; box-shadow: 0 4px 16px rgba(251,90,117,0.5); }
+  @keyframes chippulse { 0%,100%{transform:scale(1)} 40%{transform:scale(1.12)} }
+  .ad-cand { display: flex; align-items: center; gap: 12px; padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: opacity .5s, transform .5s, max-height .5s; max-height: 70px; overflow: hidden; }
+  .ad-cand.enter { opacity: 0; transform: translateX(-24px); }
+  .ad-cand.enter.in { opacity: 1; transform: translateX(0); }
+  .ad-cand.fade { opacity: 0.2; }
+  .ad-cand.collapse { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border: none; }
+  .ad-cand .av { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.3)); color: #c7d2fe; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; font-family: 'Rubik'; border: 1px solid rgba(255,255,255,0.08); }
+  .ad-cand .info { flex: 1; min-width: 0; }
+  .ad-cand .nm { font-weight: 700; font-size: 14.5px; display: flex; align-items: center; gap: 6px; }
+  .ad-cand .nm .src { display: inline-flex; color: #a5b4fc; }
+  .ad-cand .meta { font-size: 12px; color: var(--muted-2); }
+  .ad-pill { font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 7px; white-space: nowrap; }
+  .ad-pill.new { background: rgba(99,102,241,0.18); color: #a5b4fc; }
+  .ad-pill.prog { background: rgba(251,191,36,0.16); color: var(--amber); }
+  .ad-pill.hired { background: rgba(52,211,153,0.16); color: var(--green); }
+  .ad-due { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 600; padding: 4px 9px; border-radius: 7px; background: var(--rose-dim); color: #fda4b4; white-space: nowrap; }
+
+  /* AI panel */
+  .ad-ai { position: absolute; inset: 20px; background: linear-gradient(165deg, rgba(24,21,42,0.98), rgba(14,12,26,0.99)); border: 1px solid rgba(129,140,248,0.3); border-radius: 16px; padding: 26px; opacity: 0; transform: translateY(30px) scale(0.98); transition: opacity .5s, transform .5s; z-index: 4; display: flex; flex-direction: column; }
+  .ad-ai.show { opacity: 1; transform: translateY(0) scale(1); }
+  .ad-ai-head { display: flex; align-items: center; gap: 11px; margin-bottom: 18px; }
+  .ad-ai-head .spark { width: 40px; height: 40px; border-radius: 11px; background: linear-gradient(135deg, var(--indigo), var(--violet)); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(124,58,237,0.5); }
+  .ad-ai-head h4 { font-family: 'Rubik'; font-size: 17px; font-weight: 700; margin: 0; }
+  .ad-ai-head p { font-size: 12.5px; color: var(--muted-2); margin: 2px 0 0; }
+  .ad-ai-job { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 13px 15px; font-size: 14px; color: #e6e5f2; margin-bottom: 18px; min-height: 46px; display: flex; align-items: center; }
+  .ad-ai-job .cursor { display: inline-block; width: 2px; height: 17px; background: #a5b4fc; margin-inline-start: 2px; animation: blink 1s step-end infinite; vertical-align: middle; }
+  @keyframes blink { 50%{opacity:0} }
+  .ad-ai-label { font-size: 12px; color: var(--muted); margin-bottom: 12px; font-weight: 600; opacity: 0; transition: opacity .4s; }
+  .ad-ai-label.show { opacity: 1; }
+  .ad-match { display: flex; align-items: center; gap: 15px; background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.25); border-radius: 12px; padding: 15px; opacity: 0; transform: translateY(14px); transition: opacity .5s, transform .5s; }
+  .ad-match.show { opacity: 1; transform: translateY(0); }
+  .ad-ring { position: relative; width: 58px; height: 58px; flex-shrink: 0; }
+  .ad-ring svg { transform: rotate(-90deg); }
+  .ad-ring .val { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Rubik'; font-weight: 800; font-size: 16px; color: var(--green); }
+  .ad-match .who { flex: 1; }
+  .ad-match .who .n { font-weight: 700; font-size: 15px; }
+  .ad-match .who .r { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
   /* reveal */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: none; }
@@ -233,6 +308,8 @@
 </style>
 </head>
 <body>
+
+<a href="#pain" class="skip-link">דלג לתוכן המרכזי</a>
 
 <div class="ambient" aria-hidden="true">
   <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
@@ -377,10 +454,49 @@
       <h2>לראות כדי להאמין</h2>
       <p>סיור קצר במסלול המלא — מהליד האנונימי ועד העמלה בכיס.</p>
     </div>
-    <div class="video-frame reveal">
-      <div class="play-btn"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
-      <div class="video-cap">סרטון הדגמה — 2 דקות</div>
-      <div class="video-soon">בקרוב</div>
+    <div class="ademo reveal">
+      <div class="ademo-frame">
+        <div class="ademo-bar">
+          <span class="d d1"></span><span class="d d2"></span><span class="d d3"></span>
+          <span class="ttl">Prelio — הדגמה חיה</span>
+          <span class="live"><span class="ping"></span>LIVE</span>
+        </div>
+        <div class="ademo-stage" id="adStage" aria-hidden="true">
+          <!-- toast -->
+          <div class="ademo-toast" id="adToast"><span class="tic" id="adToastIc"></span><span id="adToastTxt"></span></div>
+
+          <!-- candidate list view -->
+          <div id="adListView">
+            <div class="ad-filters">
+              <span class="ad-chip" style="background:rgba(99,102,241,.18);color:#a5b4fc;border-color:transparent">כל הפעילים</span>
+              <span class="ad-chip rose" id="adRoseChip">לטיפול היום <span id="adRoseCnt">(2)</span></span>
+            </div>
+            <div id="adCandList">
+              <div class="ad-cand" data-role="due" data-name="yossi"><div class="av">יכ</div><div class="info"><div class="nm">יוסי כהן</div><div class="meta">תל אביב · מכירות B2B</div></div><span class="ad-due">היום</span></div>
+              <div class="ad-cand" data-role="other"><div class="av">תב</div><div class="info"><div class="nm">תמר ברק</div><div class="meta">פתח תקווה · הנהלת חשבונות</div></div><span class="ad-pill prog">בטיפול</span></div>
+              <div class="ad-cand" data-role="due" data-name="david"><div class="av">דפ</div><div class="info"><div class="nm">דוד פרץ</div><div class="meta">אשדוד · לוגיסטיקה</div></div><span class="ad-due">היום</span></div>
+              <div class="ad-cand" data-role="other"><div class="av">שג</div><div class="info"><div class="nm">שרה גולן</div><div class="meta">ירושלים · משאבי אנוש</div></div><span class="ad-pill hired">התקבלה ✓</span></div>
+            </div>
+          </div>
+
+          <!-- AI panel -->
+          <div class="ad-ai" id="adAi">
+            <div class="ad-ai-head">
+              <span class="spark"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg></span>
+              <div><h4>עוזר AI — התאמת מועמדים</h4><p>מנתח את המאגר מול דרישות המשרה</p></div>
+            </div>
+            <div class="ad-ai-job"><span id="adJobTxt"></span><span class="cursor" id="adCursor"></span></div>
+            <div class="ad-ai-label" id="adAiLabel">✦ ההתאמה המובילה מהמאגר שלך:</div>
+            <div class="ad-match" id="adMatch">
+              <div class="ad-ring">
+                <svg width="58" height="58"><circle cx="29" cy="29" r="25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="5"/><circle id="adRingFill" cx="29" cy="29" r="25" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"/></svg>
+                <span class="val" id="adRingVal">0%</span>
+              </div>
+              <div class="who"><div class="n">יוסי כהן</div><div class="r">מכירות B2B · 4 שנות ניסיון · זמין מיידית</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="demo-steps">
       <div class="dstep reveal"><div class="n">שלב 1</div><h4>המאגר החי</h4><p>מיכל שנכנסה לבד מהטופס, אבי אחרי 3 ניסיונות, תמר שממתינה להמלצה — אף אחד לא הולך לאיבוד.</p></div>
@@ -442,11 +558,16 @@
       <a href="#pain">למה פריליו?</a>
       <a href="#demo">איך זה עובד</a>
       <a href="#faq">שאלות נפוצות</a>
+      <a href="accessibility.html">נגישות</a>
       <a href="https://prelio-crm.vercel.app/">כניסה למערכת</a>
     </div>
     <div class="foot-copy">© 2026 Prelio · כל הזכויות שמורות</div>
   </div>
 </footer>
+
+<button class="to-top" id="toTop" aria-label="חזרה לראש העמוד" title="חזרה למעלה">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
 
 <script>
   const nav = document.getElementById('nav');
@@ -464,6 +585,137 @@
 
   const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 3 * 0.08) + 's'; io.observe(el); });
+
+  // scroll-to-top
+  const toTop = document.getElementById('toTop');
+  addEventListener('scroll', () => toTop.classList.toggle('show', scrollY > 500), { passive: true });
+  toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // ===== animated AI demo sequence =====
+  (function () {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stage = document.getElementById('adStage');
+    if (!stage) return;
+    const toast = document.getElementById('adToast'), toastTxt = document.getElementById('adToastTxt'), toastIc = document.getElementById('adToastIc');
+    const listView = document.getElementById('adListView'), aiPanel = document.getElementById('adAi');
+    const roseChip = document.getElementById('adRoseChip');
+    const cands = [...document.querySelectorAll('#adCandList .ad-cand')];
+    const jobTxt = document.getElementById('adJobTxt'), cursor = document.getElementById('adCursor');
+    const aiLabel = document.getElementById('adAiLabel'), match = document.getElementById('adMatch');
+    const ringFill = document.getElementById('adRingFill'), ringVal = document.getElementById('adRingVal');
+    const ICON_GLOBE = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
+    const ICON_CLOCK = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 13.5"/></svg>';
+    const ICON_SPARK = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>';
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+
+    function showToast(txt, icon, cls) {
+      toast.className = 'ademo-toast ' + (cls || '');
+      toastIc.innerHTML = icon; toastTxt.textContent = txt;
+      requestAnimationFrame(() => toast.classList.add('show'));
+    }
+    const hideToast = () => toast.classList.remove('show');
+
+    function reset() {
+      hideToast();
+      aiPanel.classList.remove('show');
+      roseChip.classList.remove('pulse', 'active-rose');
+      document.getElementById('adRoseCnt').textContent = '(2)';
+      cands.forEach(c => { c.classList.remove('fade', 'collapse'); c.classList.remove('enter', 'in'); });
+      // reset AI internals
+      jobTxt.textContent = ''; cursor.style.display = 'inline-block';
+      aiLabel.classList.remove('show'); match.classList.remove('show');
+      ringFill.style.strokeDashoffset = '157'; ringVal.textContent = '0%';
+    }
+
+    async function typeText(el, text, speed) {
+      for (let i = 0; i <= text.length; i++) { el.textContent = text.slice(0, i); await wait(speed); }
+    }
+
+    async function animateRing(target) {
+      const circ = 157; let cur = 0;
+      return new Promise(res => {
+        const step = () => {
+          cur += 2; if (cur > target) cur = target;
+          ringFill.style.strokeDashoffset = (circ - (circ * cur / 100)).toFixed(1);
+          ringVal.textContent = cur + '%';
+          if (cur < target) requestAnimationFrame(step); else res();
+        };
+        step();
+      });
+    }
+
+    async function sequence() {
+      reset();
+      await wait(600);
+
+      // SCENE 1 — candidate enters from form
+      const yossi = cands.find(c => c.dataset.name === 'yossi');
+      // start: hide the "new" candidate by injecting michal at top
+      const michal = document.createElement('div');
+      michal.className = 'ad-cand enter';
+      michal.innerHTML = '<div class="av">מל</div><div class="info"><div class="nm">מיכל לוי <span class="src">' + ICON_GLOBE + '</span></div><div class="meta">רמת גן · אדמיניסטרציה</div></div><span class="ad-pill new">חדש</span>';
+      document.getElementById('adCandList').prepend(michal);
+      await wait(200);
+      showToast('מועמדת חדשה נכנסה מהטופס הציבורי', ICON_GLOBE, '');
+      requestAnimationFrame(() => michal.classList.add('in'));
+      await wait(2600);
+      hideToast();
+      await wait(500);
+
+      // SCENE 2 — red filter
+      roseChip.classList.add('pulse');
+      await wait(300);
+      roseChip.classList.add('active-rose');
+      showToast('2 מועמדים דורשים טיפול היום', ICON_CLOCK, 'rose');
+      // fade+collapse the non-due
+      cands.forEach(c => { if (c.dataset.role !== 'due') c.classList.add('collapse'); });
+      michal.classList.add('collapse');
+      await wait(2800);
+      hideToast();
+      await wait(400);
+
+      // restore list for cleanliness before AI
+      michal.remove();
+      cands.forEach(c => c.classList.remove('collapse'));
+      roseChip.classList.remove('active-rose', 'pulse');
+      document.getElementById('adRoseCnt').textContent = '(2)';
+      await wait(300);
+
+      // SCENE 3 — AI assistant
+      aiPanel.classList.add('show');
+      await wait(700);
+      cursor.style.display = 'inline-block';
+      await typeText(jobTxt, 'דרוש/ה מנהל/ת מכירות B2B — ניסיון 3+ שנים', reduce ? 0 : 42);
+      await wait(400);
+      cursor.style.display = 'none';
+      showToast('העוזר מצא התאמה מעולה מתוך המאגר', ICON_SPARK, 'green');
+      aiLabel.classList.add('show');
+      await wait(300);
+      match.classList.add('show');
+      await wait(500);
+      await animateRing(92);
+      await wait(2600);
+      hideToast();
+      await wait(500);
+
+      // loop
+      requestAnimationFrame(sequence);
+    }
+
+    if (reduce) {
+      // static end-state: show AI match at 92%
+      aiPanel.classList.add('show'); jobTxt.textContent = 'דרוש/ה מנהל/ת מכירות B2B — ניסיון 3+ שנים';
+      cursor.style.display = 'none'; aiLabel.classList.add('show'); match.classList.add('show');
+      ringFill.style.strokeDashoffset = (157 - 157 * 0.92).toFixed(1); ringVal.textContent = '92%';
+      return;
+    }
+
+    // start only when demo scrolls into view
+    const demoIo = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) { demoIo.disconnect(); sequence(); } });
+    }, { threshold: 0.3 });
+    demoIo.observe(stage);
+  })();
 </script>
 </body>
 </html>
