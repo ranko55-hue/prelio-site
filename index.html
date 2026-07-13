@@ -1,839 +1,446 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
-<title>Prelio — הבית של סוכני הגיוס</title>
-<meta name="description" content="פריליו היא ה-CRM האישי לסוכני גיוס עצמאיים. מנהלת את שלב הטרום-הגשה — איתור, סינון ומעקב — כדי שאף מועמד לא יתפספס ויותר לידים יהפכו לעמלות." />
-<link rel="icon" type="image/svg+xml" href="favicon.svg" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700;800;900&family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prelio — CRM לסוכני גיוס: מועמדים, משרות ו-AI במקום אחד</title>
+<meta name="description" content="פרליו מרכזת את המועמדים, הפולו-אפים והמשרות שלך במקום אחד — עם עוזר AI שמדרג התאמה. מתחילים בחינם.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;800&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #08070e;
-    --bg-2: #0d0b17;
-    --panel: rgba(255,255,255,0.035);
-    --panel-brd: rgba(255,255,255,0.09);
-    --ink: #f4f3fb;
-    --muted: #9d9bb5;
-    --muted-2: #6f6d86;
-    --indigo: #6366f1;
-    --violet: #8b5cf6;
-    --rose: #fb5a75;
-    --rose-dim: rgba(251,90,117,0.14);
-    --green: #34d399;
-    --amber: #fbbf24;
-    --radius: 16px;
-    --maxw: 1140px;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0; background: var(--bg); color: var(--ink);
-    font-family: 'Heebo', system-ui, sans-serif; line-height: 1.65;
-    -webkit-font-smoothing: antialiased; overflow-x: hidden; position: relative;
-  }
-  h1,h2,h3,h4,.display { font-family: 'Rubik', system-ui, sans-serif; }
-  a { color: inherit; text-decoration: none; }
-  img, svg { max-width: 100%; }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
-  .grad-text { background: linear-gradient(115deg, #a5b4fc 0%, #c4b5fd 45%, #f0abfc 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+:root{
+  --bg:#f9f7fd; --bg2:#f6f3fa; --ink:#2d2438; --muted:#6b6178; --brand:#9270fc; --brand-dark:#7d55f0; --brand2:#f52ac9; --grad:linear-gradient(135deg,#f52ac9 0%,#b263f7 55%,#9270fc 100%);
+  --brand-soft:#f8f1fe; --line:#ece6f2; --card:#ffffff;
+  --chip-blue-bg:#e3edfa; --chip-blue:#1e5a99; --chip-green-bg:#eaf3de; --chip-green:#3b6d11;
+  --chip-orange-bg:#fbeadd; --chip-orange:#a15c1f; --chip-purple-bg:#ece4f7; --chip-purple:#6a45a8;
+  --chip-pink-bg:#fae3ee; --chip-pink:#a83a74;
+  --sh-sm:0 1px 2px rgba(45,36,56,.06);
+  --sh-lg:0 1px 2px rgba(45,36,56,.05), 0 20px 48px -16px rgba(104,76,190,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Assistant',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;overflow-x:hidden}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:'Rubik','Assistant',sans-serif;letter-spacing:-.3px}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'Rubik';font-weight:600;font-size:15.5px;
+  padding:12px 26px;border-radius:12px;cursor:pointer;text-decoration:none;border:1px solid transparent;transition:all .16s ease}
+.btn-brand{background:var(--grad);color:#fff;box-shadow:0 3px 10px rgba(178,60,220,.35)}
+.btn-brand:hover{filter:saturate(1.15) brightness(1.03);transform:translateY(-1px);box-shadow:0 8px 22px rgba(178,60,220,.4)}
+.btn-ghost{background:#fff;color:var(--ink);border-color:var(--line);box-shadow:var(--sh-sm)}
+.btn-ghost:hover{border-color:#cbbce8;background:var(--brand-soft)}
+.chip{display:inline-block;font-size:12.5px;font-weight:700;padding:3px 12px;border-radius:20px}
 
-  /* fixed ambient background */
-  .ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .ambient .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5; }
-  .ambient .b1 { width: 620px; height: 620px; background: radial-gradient(circle, #4f46e5, transparent 65%); top: -220px; inset-inline-start: -140px; animation: drift1 22s ease-in-out infinite; }
-  .ambient .b2 { width: 560px; height: 560px; background: radial-gradient(circle, #7c3aed, transparent 65%); top: 8%; inset-inline-end: -180px; animation: drift2 26s ease-in-out infinite; }
-  .ambient .b3 { width: 500px; height: 500px; background: radial-gradient(circle, #db2777, transparent 68%); top: 42%; inset-inline-start: 30%; opacity: 0.3; animation: drift1 30s ease-in-out infinite reverse; }
-  .ambient .grid-ov { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%); }
-  .ambient .fade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, var(--bg) 78%); }
-  @keyframes drift1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,50px)} }
-  @keyframes drift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,60px)} }
+/* ───── ניווט ───── */
+nav{position:sticky;top:0;z-index:50;background:rgba(251,250,255,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:26px;padding:14px 0}
+.logo{font-family:'Rubik';font-weight:800;font-size:21px;text-decoration:none;display:flex;align-items:center;gap:8px;letter-spacing:-.3px}
+.logo img{width:30px;height:30px;object-fit:contain}
+.nav-links{display:flex;gap:24px;margin-inline-start:auto;align-items:center}
+.nav-links>a{text-decoration:none;font-weight:600;font-size:14.5px;color:var(--muted);transition:color .15s}
+.nav-links>a:hover{color:var(--ink)}
+.nav-cta{padding:9px 20px;font-size:14px}
+@media(max-width:700px){.nav-links a.hideS{display:none}}
 
-  /* buttons */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; font-family: 'Heebo'; font-weight: 600; font-size: 16px; padding: 14px 26px; border-radius: 12px; cursor: pointer; border: 1px solid transparent; transition: transform .15s, box-shadow .25s, background .2s, border-color .2s; white-space: nowrap; }
-  .btn-primary { position: relative; background: linear-gradient(120deg, var(--indigo), var(--violet)); color: #fff; box-shadow: 0 8px 30px rgba(99,102,241,0.4), inset 0 1px 0 rgba(255,255,255,0.25); }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(99,102,241,0.55), inset 0 1px 0 rgba(255,255,255,0.25); }
-  .btn-ghost { background: rgba(255,255,255,0.05); color: var(--ink); border-color: var(--panel-brd); backdrop-filter: blur(8px); }
-  .btn-ghost:hover { background: rgba(255,255,255,0.09); transform: translateY(-2px); }
-  .btn-lg { padding: 16px 32px; font-size: 17px; }
+/* ───── פתיח ───── */
+.hero{position:relative;padding:76px 0 40px}
+.hero::before{content:'';position:absolute;top:-180px;inset-inline-end:-160px;width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle at 72% 30%,rgba(146,112,252,.16),transparent 62%),radial-gradient(circle at 30% 65%,rgba(245,42,201,.09),transparent 58%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 1.08fr;gap:52px;align-items:center;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fdeef9;color:#c31d9e;border:1px solid #f7cdeb;border-radius:20px;padding:5px 16px;font-weight:700;font-size:13px;margin-bottom:20px}
+.hero h1{font-size:clamp(34px,4.6vw,52px);font-weight:800;line-height:1.14;margin-bottom:16px}
+.hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{font-size:18px;color:var(--muted);max-width:46ch;margin-bottom:28px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero-trust{display:flex;gap:8px 18px;flex-wrap:wrap;margin-top:18px;font-size:13.5px;color:var(--muted)}
+.hero-trust span{display:inline-flex;gap:6px;align-items:center}
+.hero-trust b{color:var(--ink);font-weight:700}
+.ok{color:var(--chip-green);font-weight:800}
 
-  /* nav */
-  header.nav { position: sticky; top: 0; z-index: 60; transition: background .3s, border-color .3s; border-bottom: 1px solid transparent; }
-  header.nav.scrolled { background: rgba(10,9,18,0.7); backdrop-filter: saturate(160%) blur(16px); border-bottom-color: var(--panel-brd); }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 74px; }
-  .brand { display: flex; align-items: center; gap: 11px; font-family: 'Rubik'; font-weight: 700; font-size: 22px; letter-spacing: -0.5px; }
-  .brand .mark { width: 34px; height: 34px; border-radius: 9px; box-shadow: 0 4px 16px rgba(139,92,246,0.4); }
-  .nav-links { display: flex; gap: 34px; }
-  .nav-links a { font-weight: 500; font-size: 15.5px; color: var(--muted); transition: color .15s; }
-  .nav-links a:hover { color: var(--ink); }
-  .nav-cta { display: flex; align-items: center; gap: 12px; }
-  .nav-login { font-weight: 600; font-size: 15.5px; color: var(--ink); padding: 9px 20px; border-radius: 10px; border: 1px solid var(--panel-brd); background: rgba(255,255,255,0.05); transition: background .15s, border-color .15s; }
-  .nav-login:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-  .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 6px; color: var(--ink); }
+/* ───── חלון הדגמה ───── */
+.win{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh-lg);overflow:hidden}
+.win-bar{display:flex;align-items:center;gap:7px;padding:11px 16px;border-bottom:1px solid var(--line);background:#faf8fd}
+.win-bar i{width:10px;height:10px;border-radius:50%}
+.win-bar i:nth-child(1){background:#f0c8c4}.win-bar i:nth-child(2){background:#f3ddb0}.win-bar i:nth-child(3){background:#c9e2bb}
+.win-url{margin-inline-start:10px;background:#f3f0f9;border-radius:7px;padding:3px 14px;font-size:11.5px;color:var(--muted);direction:ltr}
+.demo-body{position:relative;padding:18px;min-height:330px}
+.demo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.demo-head b{font-family:'Rubik';font-size:15.5px}
+.demo-stats{display:flex;gap:6px}
+.pill{font-size:11px;font-weight:700;padding:3px 11px;border-radius:14px}
+.row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #eee8f6;border-radius:11px;padding:10px 13px;margin-bottom:8px;box-shadow:var(--sh-sm);opacity:0;animation:rowIn .5s forwards}
+.row:nth-child(1){animation-delay:.3s}.row:nth-child(2){animation-delay:.8s}.row:nth-child(3){animation-delay:1.3s}.row:nth-child(4){animation-delay:1.8s}
+@keyframes rowIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;flex-shrink:0}
+.rname{min-width:0;flex:1}
+.rname b{display:block;font-size:14px;line-height:1.3}
+.rname span{font-size:11.5px;color:var(--muted)}
+.st{font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:14px;white-space:nowrap}
+.flip{display:grid}
+.flip span{grid-area:1/1;font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:14px;white-space:nowrap}
+.flip .a{background:var(--chip-blue-bg);color:var(--chip-blue);animation:flipA 14s infinite}
+.flip .b{background:var(--chip-purple-bg);color:var(--chip-purple);opacity:0;animation:flipB 14s infinite}
+@keyframes flipA{0%,28%{opacity:1}33%,100%{opacity:0}}
+@keyframes flipB{0%,28%{opacity:0}33%,93%{opacity:1}100%{opacity:0}}
+.toast{position:absolute;top:56px;inset-inline-start:18px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:600;
+  padding:8px 16px;border-radius:10px;opacity:0;animation:toast 14s infinite;box-shadow:0 8px 20px rgba(45,36,56,.25);z-index:3}
+@keyframes toast{0%,16%{opacity:0;transform:translateY(-8px)}20%,38%{opacity:1;transform:none}43%,100%{opacity:0}}
+.ai-panel{position:absolute;top:0;bottom:0;inset-inline-end:0;width:58%;background:#fff;border-inline-start:1px solid var(--line);
+  box-shadow:-16px 0 32px -18px rgba(45,36,56,.18);padding:18px;transform:translateX(-104%);animation:aiIn 14s infinite;z-index:4}
+@keyframes aiIn{0%,46%{transform:translateX(-104%)}53%,86%{transform:translateX(0)}93%,100%{transform:translateX(-104%)}}
+.ai-panel h4{font-family:'Rubik';font-size:13.5px;display:flex;gap:8px;align-items:center;margin-bottom:14px}
+.ai-tag{background:var(--chip-purple-bg);color:var(--chip-purple);font-size:10.5px;padding:2px 10px;border-radius:12px}
+.rank{margin-bottom:13px}
+.rank b{font-size:13px}
+.bar{height:8px;background:#efe9f6;border-radius:6px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--grad);border-radius:6px;width:0;animation:fill 14s infinite}
+.r1 i{animation-name:fill1}.r2 i{animation-name:fill2}.r3 i{animation-name:fill3}
+@keyframes fill1{0%,53%{width:0}64%,86%{width:92%}93%,100%{width:0}}
+@keyframes fill2{0%,55%{width:0}66%,86%{width:81%}93%,100%{width:0}}
+@keyframes fill3{0%,57%{width:0}68%,86%{width:64%}93%,100%{width:0}}
+.rank span{font-size:11.5px;color:var(--muted)}
 
-  /* hero */
-  .hero { padding: 70px 0 50px; }
-  .hero-grid { display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 54px; align-items: center; }
-  .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 600; color: #c7d2fe; background: rgba(99,102,241,0.12); border: 1px solid rgba(129,140,248,0.28); padding: 7px 16px; border-radius: 30px; margin-bottom: 26px; }
-  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 10px var(--indigo); }
-  h1 { font-size: clamp(32px, 4.7vw, 56px); font-weight: 800; line-height: 1.08; letter-spacing: -1.5px; margin: 0 0 20px; }
-  h1 .hl { color: var(--rose); }
-  .hero-sub { font-family: 'Rubik'; font-weight: 600; font-size: clamp(19px, 2.2vw, 25px); margin: -8px 0 24px; }
-  .hero-p { font-size: 17.5px; color: var(--muted); max-width: 540px; margin: 0 0 34px; }
-  .hero-p strong { color: #e6e5f2; font-weight: 600; }
-  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
-  .hero-trust { margin-top: 24px; font-size: 14px; color: var(--muted-2); display: flex; align-items: center; gap: 8px; }
-  .hero-trust svg { color: var(--green); flex-shrink: 0; }
+/* ───── מדורים ───── */
+.sec{padding:84px 0 10px}
+.sec-eyebrow{font-weight:700;font-size:13px;letter-spacing:.6px;color:#d420b0;text-transform:uppercase}
+.sec h2{font-size:clamp(27px,3.4vw,38px);font-weight:800;line-height:1.2;margin:8px 0 12px}
+.sec .lead{color:var(--muted);font-size:17px;max-width:62ch}
+.band{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 12%,var(--bg2) 88%,var(--bg) 100%);margin-top:60px;padding:24px 0 84px}
+.band .sec{padding-top:60px}
 
-  /* glass live demo */
-  .mock-shell { position: relative; }
-  .mock-glow { position: absolute; inset: -30px; background: radial-gradient(circle at 50% 40%, rgba(124,58,237,0.35), transparent 70%); filter: blur(30px); z-index: 0; }
-  .mock { position: relative; z-index: 1; background: linear-gradient(160deg, rgba(30,27,50,0.9), rgba(17,15,30,0.92)); border: 1px solid rgba(255,255,255,0.11); border-radius: 20px; box-shadow: 0 30px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08); overflow: hidden; backdrop-filter: blur(10px); }
-  .mock-bar { display: flex; align-items: center; gap: 7px; padding: 13px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-  .mock-bar .d { width: 11px; height: 11px; border-radius: 50%; }
-  .mock-bar .d1{background:#ff5f57}.mock-bar .d2{background:#febc2e}.mock-bar .d3{background:#28c840}
-  .mock-bar .url { margin-inline-start: 12px; font-size: 12.5px; color: var(--muted-2); }
-  .mock-body { padding: 18px; }
-  .mock-filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-  .chip { font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all .15s; font-family: 'Heebo'; display: inline-flex; align-items: center; gap: 6px; }
-  .chip:hover { background: rgba(255,255,255,0.09); }
-  .chip.active { background: linear-gradient(120deg, var(--indigo), var(--violet)); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(99,102,241,0.4); }
-  .chip.rose { color: #fda4b4; border-color: rgba(251,90,117,0.35); background: var(--rose-dim); }
-  .chip.rose.active { background: var(--rose); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(251,90,117,0.45); }
-  .chip .cnt { font-size: 11px; opacity: .85; }
-  .cand { display: flex; align-items: center; gap: 13px; padding: 13px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: opacity .25s; }
-  .cand:last-child { border-bottom: none; }
-  .cand.hidden { display: none; }
-  .cand .av { width: 40px; height: 40px; border-radius: 11px; background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.3)); color: #c7d2fe; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; font-family: 'Rubik'; border: 1px solid rgba(255,255,255,0.08); }
-  .cand .info { flex: 1; min-width: 0; }
-  .cand .nm { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 7px; }
-  .cand .nm .src { display: inline-flex; color: #a5b4fc; }
-  .cand .meta { font-size: 12.5px; color: var(--muted-2); margin-top: 1px; }
-  .pill { font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 8px; white-space: nowrap; }
-  .pill.new { background: rgba(99,102,241,0.18); color: #a5b4fc; }
-  .pill.prog { background: rgba(251,191,36,0.16); color: var(--amber); }
-  .pill.hired { background: rgba(52,211,153,0.16); color: var(--green); }
-  .due-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 8px; background: var(--rose-dim); color: #fda4b4; white-space: nowrap; }
-  .mock-hint { text-align: center; font-size: 12.5px; color: var(--muted-2); margin-top: 14px; }
-  .mock-hint b { color: #fda4b4; font-weight: 600; }
+/* ───── סטוריבורד משרות ───── */
+.story{display:grid;grid-template-columns:308px 1fr;gap:36px;align-items:stretch;margin-top:38px}
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px 16px;cursor:pointer;text-align:start;font-family:inherit;position:relative;overflow:hidden;transition:all .18s;box-shadow:var(--sh-sm)}
+.step .num{font-family:'Rubik';font-weight:800;font-size:13px;min-width:26px;height:26px;border-radius:50%;background:#efe9f6;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.step b{display:block;font-family:'Rubik';font-weight:600;font-size:15px}
+.step span{font-size:13px;color:var(--muted);line-height:1.45}
+.step.on{border-color:#c7b6ec;box-shadow:var(--sh-lg)}
+.step.on .num{background:var(--grad);color:#fff}
+.step .prog{position:absolute;bottom:0;inset-inline-start:0;height:3px;background:var(--grad);width:0;border-radius:2px}
+.step.on .prog{animation:prog 4.2s linear forwards}
+@keyframes prog{to{width:100%}}
+.stage{position:relative;min-height:430px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh-sm)}
+.scene{position:absolute;inset:0;opacity:0;transform:translateY(12px);transition:opacity .45s,transform .45s;pointer-events:none;display:flex;align-items:center;justify-content:center;padding:26px}
+.scene.on{opacity:1;transform:none;pointer-events:auto}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh-lg);padding:22px;width:min(430px,100%);position:relative}
+.card h5{font-family:'Rubik';font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.f{margin-bottom:11px}
+.f label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px}
+.f div{border:1px solid #e2dbf0;border-radius:9px;padding:8px 13px;font-size:14px;background:#faf8fd;min-height:37px}
+.caret::after{content:'';display:inline-block;width:2px;height:14px;background:var(--brand2);margin-inline-start:2px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.scene .btn{pointer-events:none;width:100%}
+.linkchip{display:flex;align-items:center;gap:10px;background:#faf8fd;border:1px dashed #bfaee9;border-radius:11px;padding:11px 14px;direction:ltr;font-size:13.5px;justify-content:space-between;color:var(--muted)}
+.copybtn{background:var(--grad);color:#fff;border-radius:8px;font-weight:700;font-size:12px;padding:6px 14px}
+.wa{display:flex;gap:10px;align-items:flex-start;margin-top:18px}
+.wa-av{width:34px;height:34px;border-radius:50%;background:var(--chip-green-bg);color:var(--chip-green);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.bubble{background:#e9f8db;border-radius:13px;border-start-end-radius:3px;padding:10px 14px;font-size:13.5px;max-width:300px;box-shadow:var(--sh-sm)}
+.bubble small{display:block;color:#67a24a;direction:ltr;text-align:end;font-weight:600;margin-top:2px}
+.phone{width:236px;border:1px solid var(--line);border-radius:26px;background:#fff;box-shadow:var(--sh-lg);padding:14px 14px 18px}
+.notch{width:66px;height:7px;background:#e6e0f0;border-radius:8px;margin:0 auto 12px}
+.phone h6{font-family:'Rubik';font-size:15px}
+.phone .loc{font-size:11.5px;color:var(--muted);margin-bottom:10px}
+.mini-f{border:1px solid #e2dbf0;border-radius:8px;padding:6px 10px;font-size:11.5px;color:var(--muted);margin-bottom:7px;background:#faf8fd}
+.sendbtn{display:block;text-align:center;text-decoration:none;background:var(--grad);color:#fff;border-radius:10px;font-family:'Rubik';font-weight:600;font-size:13px;padding:9px}
+.pulse{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,42,201,.3)}50%{box-shadow:0 0 0 9px rgba(245,42,201,0)}}
+.newrow{border-color:#bfaee9!important;animation:landIn .6s .2s both!important}
+@keyframes landIn{from{opacity:0;transform:translateY(-16px) scale(.97)}to{opacity:1;transform:none}}
+.jobtag{font-size:11px;color:var(--brand);font-weight:700}
+.toast2{position:absolute;top:-14px;inset-inline-start:50%;transform:translateX(50%);background:var(--ink);color:#fff;font-size:12.5px;padding:7px 18px;border-radius:20px;box-shadow:0 8px 20px rgba(45,36,56,.25);white-space:nowrap}
 
-  /* section shells */
-  section { padding: 90px 0; position: relative; }
-  .sec-head { text-align: center; max-width: 700px; margin: 0 auto 56px; }
-  .sec-eyebrow { display: inline-block; font-size: 13px; font-weight: 700; color: #a5b4fc; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
-  .sec-head h2 { font-size: clamp(28px, 3.6vw, 42px); font-weight: 800; letter-spacing: -1px; margin: 0 0 16px; line-height: 1.18; }
-  .sec-head p { font-size: 17.5px; color: var(--muted); margin: 0; }
+/* ───── יכולות ───── */
+.feats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
+.feat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 20px;box-shadow:var(--sh-sm);transition:all .18s}
+.feat:hover{transform:translateY(-3px);box-shadow:var(--sh-lg);border-color:#ded4f3}
+.feat .chip{margin-bottom:14px}
+.feat b{display:block;font-family:'Rubik';font-weight:600;font-size:16px;margin-bottom:6px}
+.feat p{font-size:14px;color:var(--muted)}
 
-  /* pain — bento cards */
-  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .pcard { position: relative; background: var(--panel); border: 1px solid var(--panel-brd); border-radius: var(--radius); padding: 32px 28px; transition: transform .25s, border-color .25s, background .25s; overflow: hidden; }
-  .pcard::before { content: ''; position: absolute; top: 0; inset-inline-start: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); }
-  .pcard:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.055); }
-  .pcard .ic { width: 54px; height: 54px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
-  .pcard.p1 .ic { background: var(--rose-dim); color: #fda4b4; }
-  .pcard.p2 .ic { background: rgba(251,191,36,0.14); color: var(--amber); }
-  .pcard.p3 .ic { background: rgba(99,102,241,0.16); color: #a5b4fc; }
-  .pcard h3 { font-size: 20px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.3px; }
-  .pcard p { font-size: 15.5px; color: var(--muted); margin: 0; line-height: 1.62; }
+/* ───── מחירים ───── */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;align-items:stretch}
+.plan{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px 26px;display:flex;flex-direction:column;position:relative;box-shadow:var(--sh-sm)}
+.plan.hot{border:2px solid var(--brand);box-shadow:var(--sh-lg)}
+.hot-tag{position:absolute;top:-13px;inset-inline-start:24px;background:var(--grad);color:#fff;border-radius:14px;font-size:12px;font-weight:700;padding:3px 14px}
+.plan h3{font-size:17px;font-weight:600;color:var(--muted)}
+.price{font-family:'Rubik';font-weight:800;font-size:40px;margin:6px 0 2px;letter-spacing:-1px}
+.price small{font-family:'Assistant';font-size:14px;color:var(--muted);font-weight:600;letter-spacing:0}
+.plan ul{list-style:none;margin:18px 0 24px;flex:1}
+.plan li{font-size:14.5px;padding:5.5px 0;display:flex;gap:9px;align-items:baseline}
+.plan li::before{content:'✓';color:var(--chip-green);font-weight:800;font-size:13px}
+.pricing-note{margin-top:18px;font-size:13.5px;color:var(--muted);text-align:center}
 
-  /* solution — numbered rows in glass container */
-  .sol-wrap { background: var(--panel); border: 1px solid var(--panel-brd); border-radius: 22px; padding: 12px 40px; }
-  .sol-item { display: grid; grid-template-columns: 68px 1fr; gap: 24px; align-items: start; padding: 34px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
-  .sol-item:last-child { border-bottom: none; }
-  .sol-ic { width: 68px; height: 68px; border-radius: 18px; background: linear-gradient(135deg, rgba(99,102,241,0.22), rgba(139,92,246,0.22)); color: #c7d2fe; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 8px 24px rgba(99,102,241,0.2); }
-  .sol-num { font-family: 'Rubik'; font-size: 13px; font-weight: 700; color: #a5b4fc; letter-spacing: .08em; margin-bottom: 7px; }
-  .sol-item h3 { font-size: 22px; font-weight: 700; margin: 0 0 11px; letter-spacing: -0.4px; }
-  .sol-item p { font-size: 16.5px; color: var(--muted); margin: 0; max-width: 740px; }
-  .sol-item p .em { color: #e6e5f2; font-weight: 600; }
-  .sol-tag { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--green); background: rgba(52,211,153,0.13); border: 1px solid rgba(52,211,153,0.25); padding: 7px 15px; border-radius: 10px; }
+/* ───── סיום ותחתית ───── */
+.final{margin:90px 0 80px;background:linear-gradient(135deg,#2d2438,#45317f);color:#fff;border-radius:22px;padding:60px 32px;text-align:center;box-shadow:0 24px 60px -20px rgba(74,53,133,.45);position:relative;overflow:hidden}
+.final::before{content:'';position:absolute;top:-120px;inset-inline-start:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(245,42,201,.28),transparent 70%)}
+.final h2{font-size:clamp(26px,3.4vw,38px);font-weight:800;position:relative}
+.final p{color:#c6bce4;margin:10px 0 26px;font-size:16.5px;position:relative}
+.final .btn{position:relative}
+.btn-white{background:#fff;color:var(--brand-dark)}
+.btn-white:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+footer{border-top:1px solid var(--line);padding:26px 0 36px;background:var(--bg)}
+.foot{display:flex;gap:22px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:14px}
+.foot a{color:var(--muted);text-decoration:none}
+.foot a:hover{color:var(--ink)}
+.foot .logo{font-size:17px;color:var(--ink)}
+.foot span:last-child{margin-inline-start:auto}
 
-  /* demo video */
-  .video-frame { max-width: 920px; margin: 0 auto; aspect-ratio: 16/9; border-radius: 20px; background: linear-gradient(160deg, rgba(30,27,50,0.9), rgba(12,11,22,0.95)); border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; position: relative; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,0.5); }
-  .video-frame::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 45%, rgba(124,58,237,0.28), transparent 62%); }
-  .play-btn { width: 82px; height: 82px; border-radius: 50%; background: linear-gradient(120deg, var(--indigo), var(--violet)); display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 46px rgba(124,58,237,0.6); position: relative; z-index: 1; transition: transform .2s; cursor: pointer; }
-  .play-btn:hover { transform: scale(1.08); }
-  .play-btn::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 1.5px solid rgba(139,92,246,0.4); animation: pulse 2.4s ease-out infinite; }
-  @keyframes pulse { 0%{transform:scale(1);opacity:.7} 100%{transform:scale(1.5);opacity:0} }
-  .video-cap { position: relative; z-index: 1; font-size: 16px; color: #cbd5e1; font-weight: 500; }
-  .video-soon { position: relative; z-index: 1; font-size: 12.5px; color: var(--muted-2); letter-spacing: .05em; text-transform: uppercase; }
-  .demo-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; max-width: 920px; margin: 40px auto 0; }
-  .dstep { background: var(--panel); border: 1px solid var(--panel-brd); border-radius: 14px; padding: 22px; transition: transform .2s, border-color .2s; }
-  .dstep:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.16); }
-  .dstep .n { font-family: 'Rubik'; font-size: 13px; font-weight: 700; color: #a5b4fc; margin-bottom: 9px; letter-spacing: .05em; }
-  .dstep h4 { font-size: 15.5px; font-weight: 700; margin: 0 0 6px; }
-  .dstep p { font-size: 13.5px; color: var(--muted); margin: 0; line-height: 1.55; }
-
-  /* faq */
-  .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
-  .faq { background: var(--panel); border: 1px solid var(--panel-brd); border-radius: var(--radius); overflow: hidden; transition: border-color .2s, background .2s; }
-  .faq[open] { border-color: rgba(129,140,248,0.35); background: rgba(99,102,241,0.05); }
-  .faq summary { list-style: none; cursor: pointer; padding: 23px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-family: 'Rubik'; font-weight: 600; font-size: 17.5px; }
-  .faq summary::-webkit-details-marker { display: none; }
-  .faq summary .q-ic { flex-shrink: 0; color: #a5b4fc; transition: transform .25s; }
-  .faq[open] summary .q-ic { transform: rotate(45deg); }
-  .faq .ans { padding: 0 28px 26px; color: var(--muted); font-size: 16px; line-height: 1.72; }
-  .faq .ans strong { color: #e6e5f2; font-weight: 600; }
-
-  /* footer cta */
-  .footcta { padding: 100px 0; }
-  .footcta-box { position: relative; background: linear-gradient(135deg, rgba(99,102,241,0.16), rgba(139,92,246,0.12)); border: 1px solid rgba(139,92,246,0.3); border-radius: 28px; padding: 70px 40px; text-align: center; overflow: hidden; }
-  .footcta-box .fx { position: absolute; inset: 0; z-index: 0; }
-  .footcta-box .fx::before { content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(139,92,246,0.4), transparent 65%); top: -60%; inset-inline-start: 50%; transform: translateX(-50%); filter: blur(40px); }
-  .footcta-box > * { position: relative; z-index: 1; }
-  .footcta-box h2 { font-size: clamp(28px, 3.8vw, 44px); font-weight: 800; margin: 0 0 18px; letter-spacing: -1px; line-height: 1.15; }
-  .footcta-box p { font-size: 18px; color: var(--muted); margin: 0 auto 34px; max-width: 580px; }
-  .footcta-box p strong { color: #e6e5f2; }
-
-  /* footer */
-  footer.site { border-top: 1px solid var(--panel-brd); padding: 44px 0; }
-  .foot-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-  .foot-brand { display: flex; align-items: center; gap: 10px; font-family: 'Rubik'; font-weight: 700; font-size: 19px; }
-  .foot-brand .mark { width: 30px; height: 30px; border-radius: 8px; }
-  .foot-copy { font-size: 14px; color: var(--muted-2); }
-  .foot-links { display: flex; gap: 26px; font-size: 14.5px; color: var(--muted); }
-  .foot-links a:hover { color: var(--ink); }
-
-  /* accessibility: skip link + keyboard focus */
-  .skip-link { position: absolute; inset-inline-start: 50%; transform: translateX(-50%) translateY(-140%); top: 10px; z-index: 200; background: var(--indigo); color: #fff; padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: 15px; transition: transform .2s; }
-  .skip-link:focus { transform: translateX(-50%) translateY(0); outline: 2px solid #fff; outline-offset: 2px; }
-  a:focus-visible, button:focus-visible, summary:focus-visible, .chip:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 3px; border-radius: 8px; }
-
-  /* scroll-to-top button */
-  .to-top { position: fixed; inset-block-end: 26px; inset-inline-start: 26px; z-index: 80; width: 50px; height: 50px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.14); background: linear-gradient(135deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9)); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 30px rgba(99,102,241,0.4); opacity: 0; visibility: hidden; transform: translateY(16px); transition: opacity .3s, transform .3s, visibility .3s; backdrop-filter: blur(8px); }
-  .to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
-  .to-top:hover { transform: translateY(-3px); box-shadow: 0 14px 38px rgba(99,102,241,0.55); }
-
-  /* ===== accessibility widget ===== */
-  .a11y-btn { position: fixed; inset-block-end: 26px; inset-inline-end: 26px; z-index: 90; width: 54px; height: 54px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.16); background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 30px rgba(99,102,241,0.5); transition: transform .2s, box-shadow .25s; }
-  .a11y-btn:hover { transform: scale(1.08) rotate(6deg); box-shadow: 0 14px 40px rgba(99,102,241,0.65); }
-  .a11y-panel { position: fixed; inset-block-end: 92px; inset-inline-end: 26px; z-index: 91; width: 300px; max-width: calc(100vw - 40px); background: linear-gradient(165deg, rgba(24,21,42,0.98), rgba(14,12,26,0.99)); border: 1px solid rgba(129,140,248,0.3); border-radius: 18px; box-shadow: 0 24px 60px rgba(0,0,0,0.6); padding: 18px; opacity: 0; visibility: hidden; transform: translateY(16px) scale(0.96); transform-origin: bottom left; transition: opacity .25s, transform .25s, visibility .25s; backdrop-filter: blur(14px); }
-  .a11y-panel.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-  .a11y-panel h3 { font-family: 'Rubik'; font-size: 16px; font-weight: 700; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
-  .a11y-panel .sub { font-size: 12px; color: var(--muted-2); margin: 0 0 14px; }
-  .a11y-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .a11y-opt { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 8px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); color: var(--muted); cursor: pointer; font-family: 'Heebo'; font-size: 12px; font-weight: 600; text-align: center; transition: all .15s; }
-  .a11y-opt:hover { background: rgba(255,255,255,0.08); color: var(--ink); }
-  .a11y-opt.on { background: rgba(99,102,241,0.22); border-color: rgba(129,140,248,0.5); color: #c7d2fe; }
-  .a11y-opt svg { width: 22px; height: 22px; }
-  .a11y-opt .fs-num { font-family: 'Rubik'; font-size: 15px; font-weight: 800; }
-  .a11y-reset { width: 100%; margin-top: 10px; padding: 11px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--muted); font-family: 'Heebo'; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all .15s; }
-  .a11y-reset:hover { background: rgba(251,90,117,0.12); border-color: rgba(251,90,117,0.3); color: #fda4b4; }
-  .a11y-panel .a11y-full { display: block; text-align: center; margin-top: 10px; font-size: 12.5px; color: #a5b4fc; }
-
-  /* accessibility STATE classes applied to <html> */
-  html.a11y-contrast body { background: #000 !important; }
-  html.a11y-contrast { --ink: #ffffff; --muted: #e8e8f5; --muted-2: #cfcfe0; }
-  html.a11y-contrast .ambient { opacity: 0.25; }
-  html.a11y-contrast .pcard, html.a11y-contrast .sol-wrap, html.a11y-contrast .faq, html.a11y-contrast .dstep, html.a11y-contrast .mock, html.a11y-contrast .ademo-frame { background: #0a0a0a !important; border-color: rgba(255,255,255,0.4) !important; }
-  html.a11y-links a { text-decoration: underline !important; text-underline-offset: 3px; }
-  html.a11y-links a:not(.btn):not(.brand):not(.nav-login):not(.a11y-full) { background: rgba(129,140,248,0.16); padding: 1px 4px; border-radius: 4px; }
-  html.a11y-readable, html.a11y-readable body { font-family: Arial, 'Heebo', sans-serif !important; }
-  html.a11y-readable * { letter-spacing: 0.02em !important; line-height: 1.8 !important; font-family: Arial, 'Heebo', sans-serif !important; }
-  html.a11y-no-motion *, html.a11y-no-motion *::before, html.a11y-no-motion *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-  html.a11y-cursor, html.a11y-cursor * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M8 4l30 18-14 3-6 13z' fill='%23fff' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 4 4, auto !important; }
-
-  /* ===== animated AI demo ===== */
-  .ademo { max-width: 920px; margin: 0 auto; }
-  .ademo-frame { position: relative; background: linear-gradient(160deg, rgba(30,27,50,0.92), rgba(12,11,22,0.96)); border: 1px solid rgba(255,255,255,0.11); border-radius: 22px; box-shadow: 0 30px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07); overflow: hidden; backdrop-filter: blur(10px); }
-  .ademo-bar { display: flex; align-items: center; gap: 7px; padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-  .ademo-bar .d { width: 11px; height: 11px; border-radius: 50%; }
-  .ademo-bar .d1{background:#ff5f57}.ademo-bar .d2{background:#febc2e}.ademo-bar .d3{background:#28c840}
-  .ademo-bar .ttl { margin-inline-start: 12px; font-size: 13px; color: var(--muted-2); font-weight: 500; }
-  .ademo-bar .live { margin-inline-start: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--green); font-weight: 600; }
-  .ademo-bar .live .ping { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: livepulse 1.6s ease-in-out infinite; }
-  @keyframes livepulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-  .ademo-stage { position: relative; min-height: 420px; padding: 20px; }
-
-  /* toast */
-  .ademo-toast { position: absolute; top: 16px; inset-inline-end: 16px; inset-inline-start: 16px; margin: 0 auto; max-width: 400px; background: rgba(99,102,241,0.16); border: 1px solid rgba(129,140,248,0.4); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 11px; font-size: 13.5px; font-weight: 600; color: #e6e5f2; box-shadow: 0 12px 30px rgba(0,0,0,0.35); opacity: 0; transform: translateY(-12px); transition: opacity .4s, transform .4s; z-index: 5; backdrop-filter: blur(8px); }
-  .ademo-toast.show { opacity: 1; transform: translateY(0); }
-  .ademo-toast .tic { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(99,102,241,0.3); color: #c7d2fe; }
-  .ademo-toast.green .tic { background: rgba(52,211,153,0.25); color: var(--green); }
-  .ademo-toast.green { background: rgba(52,211,153,0.13); border-color: rgba(52,211,153,0.35); }
-  .ademo-toast.rose .tic { background: var(--rose-dim); color: #fda4b4; }
-  .ademo-toast.rose { background: var(--rose-dim); border-color: rgba(251,90,117,0.35); }
-
-  /* candidate list inside animated demo */
-  .ad-filters { display: flex; gap: 8px; margin: 44px 0 14px; flex-wrap: wrap; }
-  .ad-chip { font-size: 12.5px; font-weight: 600; padding: 7px 13px; border-radius: 18px; background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); transition: all .3s; display: inline-flex; align-items: center; gap: 5px; }
-  .ad-chip.rose { color: #fda4b4; border-color: rgba(251,90,117,0.3); background: var(--rose-dim); }
-  .ad-chip.pulse { animation: chippulse 0.7s ease; }
-  .ad-chip.active-rose { background: var(--rose); color: #fff; border-color: transparent; box-shadow: 0 4px 16px rgba(251,90,117,0.5); }
-  @keyframes chippulse { 0%,100%{transform:scale(1)} 40%{transform:scale(1.12)} }
-  .ad-cand { display: flex; align-items: center; gap: 12px; padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: opacity .5s, transform .5s, max-height .5s; max-height: 70px; overflow: hidden; }
-  .ad-cand.enter { opacity: 0; transform: translateX(-24px); }
-  .ad-cand.enter.in { opacity: 1; transform: translateX(0); }
-  .ad-cand.fade { opacity: 0.2; }
-  .ad-cand.collapse { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border: none; }
-  .ad-cand .av { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.3)); color: #c7d2fe; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; font-family: 'Rubik'; border: 1px solid rgba(255,255,255,0.08); }
-  .ad-cand .info { flex: 1; min-width: 0; }
-  .ad-cand .nm { font-weight: 700; font-size: 14.5px; display: flex; align-items: center; gap: 6px; }
-  .ad-cand .nm .src { display: inline-flex; color: #a5b4fc; }
-  .ad-cand .meta { font-size: 12px; color: var(--muted-2); }
-  .ad-pill { font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 7px; white-space: nowrap; }
-  .ad-pill.new { background: rgba(99,102,241,0.18); color: #a5b4fc; }
-  .ad-pill.prog { background: rgba(251,191,36,0.16); color: var(--amber); }
-  .ad-pill.hired { background: rgba(52,211,153,0.16); color: var(--green); }
-  .ad-due { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 600; padding: 4px 9px; border-radius: 7px; background: var(--rose-dim); color: #fda4b4; white-space: nowrap; }
-
-  /* AI panel */
-  .ad-ai { position: absolute; inset: 20px; background: linear-gradient(165deg, rgba(24,21,42,0.98), rgba(14,12,26,0.99)); border: 1px solid rgba(129,140,248,0.3); border-radius: 16px; padding: 26px; opacity: 0; transform: translateY(30px) scale(0.98); transition: opacity .5s, transform .5s; z-index: 4; display: flex; flex-direction: column; }
-  .ad-ai.show { opacity: 1; transform: translateY(0) scale(1); }
-  .ad-ai-head { display: flex; align-items: center; gap: 11px; margin-bottom: 18px; }
-  .ad-ai-head .spark { width: 40px; height: 40px; border-radius: 11px; background: linear-gradient(135deg, var(--indigo), var(--violet)); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(124,58,237,0.5); }
-  .ad-ai-head h4 { font-family: 'Rubik'; font-size: 17px; font-weight: 700; margin: 0; }
-  .ad-ai-head p { font-size: 12.5px; color: var(--muted-2); margin: 2px 0 0; }
-  .ad-ai-job { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 13px 15px; font-size: 14px; color: #e6e5f2; margin-bottom: 18px; min-height: 46px; display: flex; align-items: center; }
-  .ad-ai-job .cursor { display: inline-block; width: 2px; height: 17px; background: #a5b4fc; margin-inline-start: 2px; animation: blink 1s step-end infinite; vertical-align: middle; }
-  @keyframes blink { 50%{opacity:0} }
-  .ad-ai-label { font-size: 12px; color: var(--muted); margin-bottom: 12px; font-weight: 600; opacity: 0; transition: opacity .4s; }
-  .ad-ai-label.show { opacity: 1; }
-  .ad-match { display: flex; align-items: center; gap: 15px; background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.25); border-radius: 12px; padding: 15px; opacity: 0; transform: translateY(14px); transition: opacity .5s, transform .5s; }
-  .ad-match.show { opacity: 1; transform: translateY(0); }
-  .ad-ring { position: relative; width: 58px; height: 58px; flex-shrink: 0; }
-  .ad-ring svg { transform: rotate(-90deg); }
-  .ad-ring .val { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Rubik'; font-weight: 800; font-size: 16px; color: var(--green); }
-  .ad-match .who { flex: 1; }
-  .ad-match .who .n { font-weight: 700; font-size: 15px; }
-  .ad-match .who .r { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-
-  /* reveal */
-  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
-  .reveal.in { opacity: 1; transform: none; }
-
-  /* responsive */
-  @media (max-width: 920px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 42px; }
-    .mock-shell { max-width: 480px; margin: 0 auto; }
-    .nav-links { display: none; }
-    .demo-steps { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 680px) {
-    html, body { overflow-x: hidden; }
-    .wrap { padding: 0 18px; }
-    .mock-glow { inset: -6px; }
-    .hero { padding: 44px 0 24px; }
-    h1 { letter-spacing: -1px; }
-    section { padding: 62px 0; }
-    .cards-3 { grid-template-columns: 1fr; gap: 16px; }
-    .sol-wrap { padding: 6px 22px; }
-    .sol-item { grid-template-columns: 54px 1fr; gap: 16px; padding: 28px 0; }
-    .sol-ic { width: 54px; height: 54px; border-radius: 14px; }
-    .demo-steps { grid-template-columns: 1fr; }
-    .footcta { padding: 66px 0; }
-    .footcta-box { padding: 48px 24px; border-radius: 22px; }
-    .foot-inner { flex-direction: column; text-align: center; }
-    .menu-toggle { display: block; }
-    .btn { font-size: 15px; padding: 13px 22px; }
-    .nav-login { padding: 8px 15px; font-size: 14.5px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .reveal { opacity: 1; transform: none; }
-    html { scroll-behavior: auto; }
-  }
+@media(max-width:920px){
+  .hero-grid{grid-template-columns:1fr}
+  .story{grid-template-columns:1fr}
+  .steps{flex-direction:row;overflow-x:auto;padding-bottom:8px}
+  .step{min-width:200px}
+  .feats{grid-template-columns:repeat(2,1fr)}
+  .plans{grid-template-columns:1fr}
+}
+@media(max-width:560px){.feats{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}
+}
 </style>
 </head>
 <body>
 
-<a href="#pain" class="skip-link">דלג לתוכן המרכזי</a>
+<nav>
+  <div class="wrap nav-in">
+    <a class="logo" href="/"><img src="data:image/png;base64,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" alt="">Prelio</a>
+    <div class="nav-links">
+      <a href="#jobs" class="hideS">משרות</a>
+      <a href="#features" class="hideS">יכולות</a>
+      <a href="#pricing">מחירים</a>
+      <a class="btn btn-brand nav-cta" href="https://prelio-crm.vercel.app/">כניסה למערכת</a>
+    </div>
+  </div>
+</nav>
 
-<div class="ambient" aria-hidden="true">
-  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
-  <div class="grid-ov"></div><div class="fade"></div>
-</div>
+<!-- ═══════ פתיח ═══════ -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">✦ נבנה על ידי סוכן גיוס, לסוכני גיוס</span>
+      <h1>כל המועמדים, הפולו-אפים והמשרות שלך — <em>במקום אחד.</em></h1>
+      <p class="sub">פרליו היא מערכת CRM פשוטה וחכמה לגיוס: מאגר מועמדים מסודר, תזכורות שלא בורחות, קישור פנייה לכל משרה — ועוזר AI שמדרג התאמה בשבילך.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-brand" href="https://prelio-crm.vercel.app/">התחילו בחינם</a>
+        <a class="btn btn-ghost" href="#jobs">איך זה עובד?</a>
+      </div>
+      <div class="hero-trust">
+        <span><i class="ok">✓</i> 14 ימי Pro מתנה לכל נרשם</span>
+        <span><i class="ok">✓</i> בלי כרטיס אשראי</span>
+        <span><i class="ok">✓</i> בעברית, מהנייד ומהמחשב</span>
+      </div>
+    </div>
 
-<!-- NAV -->
-<header class="nav" id="nav">
-  <div class="wrap nav-inner">
-    <a href="#top" class="brand">
-      <svg class="mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#cdbaf8"/><stop offset="100%" stop-color="#f6c3dc"/></linearGradient></defs>
-        <rect width="64" height="64" rx="14" fill="url(#g)"/>
-        <line x1="24" y1="17" x2="24" y2="49" stroke="#4f3d7a" stroke-width="9" stroke-linecap="round"/>
-        <path d="M24 17 H33 A11 11 0 0 1 33 39 H24" fill="none" stroke="#4f3d7a" stroke-width="9" stroke-linecap="round"/>
-      </svg>
-      Prelio
-    </a>
-    <nav class="nav-links">
-      <a href="#pain">למה פריליו?</a>
-      <a href="#demo">איך זה עובד</a>
-      <a href="#faq">שאלות נפוצות</a>
-    </nav>
-    <div class="nav-cta">
-      <a href="https://prelio-crm.vercel.app/" class="nav-login">כניסה למערכת</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="תפריט"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <!-- חלון ההדגמה -->
+    <div class="win" aria-label="הדגמה חיה של מסך המועמדים בפרליו">
+      <div class="win-bar"><i></i><i></i><i></i><span class="win-url">prelio-crm.vercel.app</span></div>
+      <div class="demo-body">
+        <div class="demo-head">
+          <b>המועמדים שלי</b>
+          <div class="demo-stats">
+            <span class="pill" style="background:var(--chip-blue-bg);color:var(--chip-blue)">24 פעילים</span>
+            <span class="pill" style="background:var(--chip-orange-bg);color:var(--chip-orange)">3 לפולו-אפ</span>
+          </div>
+        </div>
+        <div class="toast">📥 פנייה חדשה מטופס המשרה — דנה לוי</div>
+        <div>
+          <div class="row">
+            <span class="av" style="background:var(--chip-purple-bg);color:var(--chip-purple)">דל</span>
+            <span class="rname"><b>דנה לוי</b><span>אשדוד · נציגת מכירות</span></span>
+            <span class="st" style="background:var(--chip-blue-bg);color:var(--chip-blue)">חדש</span>
+          </div>
+          <div class="row">
+            <span class="av" style="background:var(--chip-green-bg);color:var(--chip-green)">יכ</span>
+            <span class="rname"><b>יוסי כהן</b><span>ראשון לציון · מנהל מחסן</span></span>
+            <span class="flip"><span class="a">בטיפול</span><span class="b">נשלחו קו"ח</span></span>
+          </div>
+          <div class="row">
+            <span class="av" style="background:var(--chip-pink-bg);color:var(--chip-pink)">מא</span>
+            <span class="rname"><b>מירי אזולאי</b><span>אשקלון · ראיון ביום ג'</span></span>
+            <span class="st" style="background:var(--chip-pink-bg);color:var(--chip-pink)">ראיון</span>
+          </div>
+          <div class="row">
+            <span class="av" style="background:var(--chip-blue-bg);color:var(--chip-blue)">אב</span>
+            <span class="rname"><b>אבי ברוך</b><span>יבנה · הושם 🎉</span></span>
+            <span class="st" style="background:var(--chip-green-bg);color:var(--chip-green)">השמה</span>
+          </div>
+        </div>
+        <div class="ai-panel">
+          <h4>✨ התאמה למשרת נציג/ת מכירות <span class="ai-tag">AI</span></h4>
+          <div class="rank r1"><b>דנה לוי</b> <span>· 92% התאמה</span><div class="bar"><i></i></div></div>
+          <div class="rank r2"><b>מירי אזולאי</b> <span>· 81% התאמה</span><div class="bar"><i></i></div></div>
+          <div class="rank r3"><b>יוסי כהן</b> <span>· 64% התאמה</span><div class="bar"><i></i></div></div>
+        </div>
+      </div>
     </div>
   </div>
 </header>
-<span id="top"></span>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <span class="eyebrow"><span class="dot"></span>ה CRM לשלב שלפני ההגשה</span>
-      <h1>הוואטסאפ מפוצץ, האקסל קורס — <span class="hl">והעמלות שלך הולכות לאיבוד</span></h1>
-      <p class="hero-sub"><span class="grad-text">פריליו עושה לזה סוף.</span></p>
-      <p class="hero-p">המערכות של סוכנות האם רואות את המועמדים שלך רק מהרגע שהם מוגשים למשרה. אבל העבודה הקשה באמת קורית הרבה לפני — <strong>באיתור, בשיחות הסינון, ובמעקבים היומיומיים</strong>. פריליו היא הבית האישי שלך לשלב הטרום-הגשה: הכלי שמוודא שאף מועמד לא יתפספס, ושיותר לידים יהפכו לכסף בכיס.</p>
-      <div class="hero-cta">
-        <a href="https://prelio-crm.vercel.app/" class="btn btn-primary btn-lg">התחילו עכשיו — חינם, ללא התחייבות</a>
-        <a href="#demo" class="btn btn-ghost btn-lg"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>צפו ב-2 דקות הדגמה</a>
-      </div>
-      <div class="hero-trust"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>נרשמים באופן עצמאי בתוך דקה · עובד מלא מהנייד · בלי התקנה</div>
+<!-- ═══════ זרימת משרה ═══════ -->
+<div class="band">
+<section class="wrap sec" id="jobs" style="padding-top:40px">
+  <span class="sec-eyebrow">חדש בפרליו · מודול המשרות</span>
+  <h2>מפרסמים משרה, משתפים קישור —<br>והפניות נכנסות מעצמן.</h2>
+  <p class="lead">לכל משרה שתפתחו יש דף ציבורי משלה. שתפו את הקישור בוואטסאפ או בפייסבוק, וכל מי שמגיש מועמדות נכנס ישר למאגר שלכם — מתויג למשרה, כולל קורות חיים.</p>
+
+  <div class="story">
+    <div class="steps" role="tablist" aria-label="שלבי העבודה עם משרה">
+      <button class="step on" data-s="0"><span class="num">1</span><span><b>יוצרים משרה</b><span>שם, תיאור ודרישות — חצי דקה</span></span><i class="prog"></i></button>
+      <button class="step" data-s="1"><span class="num">2</span><span><b>משתפים קישור</b><span>וואטסאפ, פייסבוק, סטטוס — איפה שתרצו</span></span><i class="prog"></i></button>
+      <button class="step" data-s="2"><span class="num">3</span><span><b>המועמד מגיש</b><span>טופס נוח מהנייד, כולל קו"ח</span></span><i class="prog"></i></button>
+      <button class="step" data-s="3"><span class="num">4</span><span><b>נכנס למאגר</b><span>מתויג למשרה, מוכן לדירוג AI</span></span><i class="prog"></i></button>
     </div>
 
-    <div class="mock-shell">
-      <div class="mock-glow"></div>
-      <div class="mock" id="mock">
-        <div class="mock-bar"><span class="d d1"></span><span class="d d2"></span><span class="d d3"></span><span class="url">prelio-crm.vercel.app</span></div>
-        <div class="mock-body">
-          <div class="mock-filters">
-            <button class="chip active" data-filter="all">כל הפעילים</button>
-            <button class="chip rose" data-filter="due">לטיפול היום <span class="cnt">(2)</span></button>
-            <button class="chip" data-filter="new">חדשים</button>
+    <div class="stage">
+      <div class="scene on">
+        <div class="card">
+          <h5>💼 משרה חדשה</h5>
+          <div class="f"><label>שם המשרה</label><div class="caret">נציג/ת מכירות</div></div>
+          <div class="f"><label>העסק</label><div>סוכנות ר.ס גיוס</div></div>
+          <div class="f"><label>מיקום</label><div>אשדוד והסביבה</div></div>
+          <a class="btn btn-brand pulse">שמירה וקבלת קישור</a>
+        </div>
+      </div>
+      <div class="scene">
+        <div class="card">
+          <h5>🔗 הקישור של המשרה מוכן</h5>
+          <div class="linkchip"><span>prelio-crm.vercel.app/j/x7k2…</span><span class="copybtn">הועתק ✓</span></div>
+          <div class="wa">
+            <span class="wa-av">רס</span>
+            <div class="bubble">מחפשים נציג/ת מכירות באשדוד! 🎯 פרטים והגשה בקישור:<br>prelio-crm.vercel.app/j/x7k2…<small>21:47 ✓✓</small></div>
           </div>
-          <div id="candList">
-            <div class="cand" data-cat="due prog"><div class="av">יכ</div><div class="info"><div class="nm">יוסי כהן</div><div class="meta">תל אביב · מכירות B2B</div></div><span class="due-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 13.5"/></svg>היום</span></div>
-            <div class="cand" data-cat="new"><div class="av">מל</div><div class="info"><div class="nm">מיכל לוי <span class="src" title="נכנסה מהטופס הציבורי"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span></div><div class="meta">רמת גן · אדמיניסטרציה</div></div><span class="pill new">חדש</span></div>
-            <div class="cand" data-cat="due sent"><div class="av">דפ</div><div class="info"><div class="nm">דוד פרץ</div><div class="meta">אשדוד · לוגיסטיקה</div></div><span class="due-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 13.5"/></svg>היום</span></div>
-            <div class="cand" data-cat="prog"><div class="av">תב</div><div class="info"><div class="nm">תמר ברק</div><div class="meta">פתח תקווה · הנהלת חשבונות</div></div><span class="pill prog">בטיפול</span></div>
-            <div class="cand" data-cat="hired"><div class="av">שג</div><div class="info"><div class="nm">שרה גולן</div><div class="meta">ירושלים · משאבי אנוש</div></div><span class="pill hired">התקבלה ✓</span></div>
+        </div>
+      </div>
+      <div class="scene">
+        <div class="phone">
+          <div class="notch"></div>
+          <h6>נציג/ת מכירות</h6>
+          <div class="loc">סוכנות ר.ס גיוס · אשדוד והסביבה</div>
+          <div class="mini-f">דנה לוי</div>
+          <div class="mini-f">050-1234567</div>
+          <div class="mini-f">📎 קורות_חיים.pdf</div>
+          <div class="mini-f">כמה מילים: 4 שנות ניסיון, זמינה מיידית…</div>
+          <a class="sendbtn pulse">הגשת מועמדות</a>
+        </div>
+      </div>
+      <div class="scene">
+        <div class="card">
+          <div class="toast2">🎉 פנייה חדשה למשרת נציג/ת מכירות</div>
+          <h5 style="margin-top:10px">המועמדים שלי</h5>
+          <div class="row newrow" style="opacity:1">
+            <span class="av" style="background:var(--chip-purple-bg);color:var(--chip-purple)">דל</span>
+            <span class="rname"><b>דנה לוי</b><span>אשדוד · <span class="jobtag">💼 נציג/ת מכירות</span></span></span>
+            <span class="st" style="background:var(--chip-blue-bg);color:var(--chip-blue)">חדש</span>
           </div>
-          <div class="mock-hint">לחצו על <b>"לטיפול היום"</b> — ותראו רק מי שצריך טיפול עכשיו</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PAIN -->
-<section id="pain">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">הבעיה</div>
-      <h2>איפה הסוכנים מאבדים את הכסף?</h2>
-      <p>שלושה מקומות שבהם מועמדים חמים נעלמים — ואיתם העמלות.</p>
-    </div>
-    <div class="cards-3">
-      <div class="pcard p1 reveal">
-        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
-        <h3>הוואטסאפ שלכם קורס</h3>
-        <p>מועמדת מעולה שלחה קורות חיים וביקשה שתחזרו אליה בעוד שבועיים? ההודעה הזו עומדת להיקבר תחת עשרות שיחות אחרות. כשתיזכרו בה — היא כבר תהיה חתומה במקום אחר.</p>
-      </div>
-      <div class="pcard p2 reveal">
-        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></div>
-        <h3>האקסל לא באמת זוכר</h3>
-        <p>לרדוף אחרי שורות, לנהל סטטוסים ידנית, ולנסות להבין למי הבטחתם לחזור היום בבוקר. אקסלים נועדו לנתונים — הם לא נועדו לניהול מערכות יחסים דינמיות עם מועמדים חמים.</p>
-      </div>
-      <div class="pcard p3 reveal">
-        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-        <h3>כסף שנשאר על הרצפה</h3>
-        <p>כל מועמד שלא חזרתם אליו בזמן, או שנשכח כי עוד לא הייתה משרה מתאימה — הוא עוד הגשה פוטנציאלית שלא קרתה. ועמלה ישירה שפשוט התאיידה.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SOLUTION -->
-<section id="solution">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">הפתרון</div>
-      <h2>איך פריליו מייצרת לכם יותר השמות</h2>
-      <p>שלושה עקרונות שהופכים את שלב הטרום-הגשה ממקור לאובדן — למקור לעמלות.</p>
-    </div>
-    <div class="sol-wrap reveal">
-      <div class="sol-item">
-        <div class="sol-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
-        <div>
-          <div class="sol-num">01</div>
-          <h3>מאגר "טרום-הגשה" חי ונושם</h3>
-          <p>אין יותר מועמדים שקופים. מועמדת שנכנסה מהטופס באופן עצמאי ועדיין אין לה משרה מתאימה, או מועמד שלא ענה בניסיון השלישי — <span class="em">כולם נשמרים במאגר מסודר ונגיש</span>. ברגע שתיפתח המשרה הנכונה, המאגר שלכם כבר מלא ומוכן לשליפה מהירה.</p>
-        </div>
-      </div>
-      <div class="sol-item">
-        <div class="sol-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 13.5"/></svg></div>
-        <div>
-          <div class="sol-num">02</div>
-          <h3>הסינון האדום: המערכת שלא נותנת לכם לשכוח</h3>
-          <p>המועמד אמר "דברי איתי בעוד שבועיים אחרי המילואים"? בלחיצת כפתור אחת אתם מגדירים תזכורת. בכל בוקר, לחיצה על הסינון האדום תקפיץ לכם <span class="em">אך ורק את המועמדים שזקוקים לטיפול היום</span>. פחות עומס בראש, יותר סגירות בשטח.</p>
-        </div>
-      </div>
-      <div class="sol-item">
-        <div class="sol-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16"/><path d="M20 4v16"/><path d="M4 9h16"/><path d="M9 9c0 3 3 3 3 6"/><path d="M15 9c0 3-3 3-3 6"/></svg></div>
-        <div>
-          <div class="sol-num">03</div>
-          <h3>הגשר המושלם למערכת המרכזית</h3>
-          <p>פריליו לא באה להחליף את מערכת ה-CRM הארגונית של סוכנות האם (כמו SVT) — אלא להזין אותה. אתם מנהלים את כל היסטוריית הקשר האישית אצלכם בפריליו, וברגע שהמועמד בשל — מעבירים אותו להגשה. המערכת תלווה אתכם בסטטוסים ברורים עד לשלב המשמח ביותר.</p>
-          <span class="sol-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>התקבל — עמלה מלאה שולמה</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- DEMO -->
-<section id="demo">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">הדגמה</div>
-      <h2>לראות כדי להאמין</h2>
-      <p>סיור קצר במסלול המלא — מהליד האנונימי ועד העמלה בכיס.</p>
-    </div>
-    <div class="ademo reveal">
-      <div class="ademo-frame">
-        <div class="ademo-bar">
-          <span class="d d1"></span><span class="d d2"></span><span class="d d3"></span>
-          <span class="ttl">Prelio — הדגמה חיה</span>
-          <span class="live"><span class="ping"></span>LIVE</span>
-        </div>
-        <div class="ademo-stage" id="adStage" aria-hidden="true">
-          <!-- toast -->
-          <div class="ademo-toast" id="adToast"><span class="tic" id="adToastIc"></span><span id="adToastTxt"></span></div>
-
-          <!-- candidate list view -->
-          <div id="adListView">
-            <div class="ad-filters">
-              <span class="ad-chip" style="background:rgba(99,102,241,.18);color:#a5b4fc;border-color:transparent">כל הפעילים</span>
-              <span class="ad-chip rose" id="adRoseChip">לטיפול היום <span id="adRoseCnt">(2)</span></span>
-            </div>
-            <div id="adCandList">
-              <div class="ad-cand" data-role="due" data-name="yossi"><div class="av">יכ</div><div class="info"><div class="nm">יוסי כהן</div><div class="meta">תל אביב · מכירות B2B</div></div><span class="ad-due">היום</span></div>
-              <div class="ad-cand" data-role="other"><div class="av">תב</div><div class="info"><div class="nm">תמר ברק</div><div class="meta">פתח תקווה · הנהלת חשבונות</div></div><span class="ad-pill prog">בטיפול</span></div>
-              <div class="ad-cand" data-role="due" data-name="david"><div class="av">דפ</div><div class="info"><div class="nm">דוד פרץ</div><div class="meta">אשדוד · לוגיסטיקה</div></div><span class="ad-due">היום</span></div>
-              <div class="ad-cand" data-role="other"><div class="av">שג</div><div class="info"><div class="nm">שרה גולן</div><div class="meta">ירושלים · משאבי אנוש</div></div><span class="ad-pill hired">התקבלה ✓</span></div>
-            </div>
+          <div class="row" style="opacity:1;animation:none">
+            <span class="av" style="background:var(--chip-green-bg);color:var(--chip-green)">יכ</span>
+            <span class="rname"><b>יוסי כהן</b><span>ראשון לציון</span></span>
+            <span class="st" style="background:var(--chip-purple-bg);color:var(--chip-purple)">נשלחו קו"ח</span>
           </div>
-
-          <!-- AI panel -->
-          <div class="ad-ai" id="adAi">
-            <div class="ad-ai-head">
-              <span class="spark"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg></span>
-              <div><h4>עוזר AI — התאמת מועמדים</h4><p>מנתח את המאגר מול דרישות המשרה</p></div>
-            </div>
-            <div class="ad-ai-job"><span id="adJobTxt"></span><span class="cursor" id="adCursor"></span></div>
-            <div class="ad-ai-label" id="adAiLabel">✦ ההתאמה המובילה מהמאגר שלך:</div>
-            <div class="ad-match" id="adMatch">
-              <div class="ad-ring">
-                <svg width="58" height="58"><circle cx="29" cy="29" r="25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="5"/><circle id="adRingFill" cx="29" cy="29" r="25" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"/></svg>
-                <span class="val" id="adRingVal">0%</span>
-              </div>
-              <div class="who"><div class="n">יוסי כהן</div><div class="r">מכירות B2B · 4 שנות ניסיון · זמין מיידית</div></div>
-            </div>
+          <div class="row" style="opacity:1;animation:none">
+            <span class="av" style="background:var(--chip-pink-bg);color:var(--chip-pink)">מא</span>
+            <span class="rname"><b>מירי אזולאי</b><span>אשקלון</span></span>
+            <span class="st" style="background:var(--chip-pink-bg);color:var(--chip-pink)">ראיון</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="demo-steps">
-      <div class="dstep reveal"><div class="n">שלב 1</div><h4>המאגר החי</h4><p>מיכל שנכנסה לבד מהטופס, אבי אחרי 3 ניסיונות, תמר שממתינה להמלצה — אף אחד לא הולך לאיבוד.</p></div>
-      <div class="dstep reveal"><div class="n">שלב 2</div><h4>הפעולה היומית</h4><p>לחיצה על הסינון האדום מציפה את יוסי ודוד עם "לטיפול היום". תזכורת ממוקדת עשייה.</p></div>
-      <div class="dstep reveal"><div class="n">שלב 3</div><h4>היסטוריה והגשה</h4><p>כרטיס נועה מראה בדיוק מתי נכנסה ומה קרה איתה — עד רגע ההגשה לסוכנות האם.</p></div>
-      <div class="dstep reveal"><div class="n">שלב 4</div><h4>שורת הרווח</h4><p>שרה גולן: "התקבלה — עמלה מלאה שולמה". מסלול מלא, ללא נזילות בדרך.</p></div>
-    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ יכולות ═══════ -->
+<section class="wrap sec" id="features">
+  <span class="sec-eyebrow">מה עוד יש בפנים</span>
+  <h2>כל מה שסוכן צריך. בלי מה שלא.</h2>
+  <div class="feats">
+    <div class="feat"><span class="chip" style="background:var(--chip-blue-bg);color:var(--chip-blue)">מאגר</span><b>כל מועמד — כרטיס מסודר</b><p>פרטים, קורות חיים, ציר זמן של כל מגע וסטטוס ברור. חיפוש שמוצא בשנייה.</p></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-orange-bg);color:var(--chip-orange)">פולו-אפ</span><b>אף מועמד לא נשכח</b><p>קובעים תאריך חזרה — והמערכת מזכירה. מה שדחוף היום מחכה בראש המסך.</p></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">AI</span><b>דירוג התאמה בלחיצה</b><p>מדביקים דרישות משרה או לוחצים על משרה קיימת — ומקבלים את המתאימים ביותר, מדורגים ומנומקים.</p></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-green-bg);color:var(--chip-green)">טפסים</span><b>קישור אישי + קישור לכל משרה</b><p>מועמדים ממלאים לבד מהנייד, כולל קו"ח — ונכנסים ישר למאגר. כפילויות מזוהות אוטומטית.</p></div>
   </div>
 </section>
 
-<!-- FAQ -->
-<section id="faq">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">שאלות נפוצות</div>
-      <h2>כל מה שרציתם לדעת</h2>
+<!-- ═══════ מחירים ═══════ -->
+<section class="wrap sec" id="pricing">
+  <span class="sec-eyebrow">מחירים</span>
+  <h2>מתחילים בחינם. משדרגים כשצריך.</h2>
+  <p class="lead">כל נרשם חדש מקבל 14 ימי ניסיון מלאים של Pro — בלי כרטיס אשראי.</p>
+  <div class="plans">
+    <div class="plan">
+      <h3>חינם</h3>
+      <div class="price">₪0 <small>לתמיד</small></div>
+      <ul>
+        <li>עד 30 מועמדים פעילים</li>
+        <li>15 דירוגי AI בחודש</li>
+        <li>טופס פנייה אישי + קו"ח</li>
+        <li>פולו-אפים וייבוא מאקסל</li>
+      </ul>
+      <a class="btn btn-ghost" href="https://prelio-crm.vercel.app/">להתחיל בחינם</a>
     </div>
-    <div class="faq-list">
-      <details class="faq reveal">
-        <summary>האם פריליו מתחרה במערכת הגיוס של סוכנות האם שלי (למשל SVT)?<span class="q-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
-        <div class="ans">ממש לא. פריליו נולדה כדי <strong>להשלים</strong> אותה. המערכת המרכזית רואה את המועמד רק מרגע ההגשה הרשמית. פריליו היא הכלי האישי והפרטי שלך שמנהל את כל מה שקורה <strong>לפני</strong> — בשלב האיתור והסינון — במטרה לעזור לך לייצר הרבה יותר הגשות איכותיות, ובהתאם להגדיל את העמלות.</div>
-      </details>
-      <details class="faq reveal">
-        <summary>האם המערכת דורשת התקנה מורכבת או אישור מהארגון?<span class="q-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
-        <div class="ans">אפס חיכוך. פריליו היא מערכת עצמאית לחלוטין (SaaS) שאינה דורשת שום פרויקט IT או הטמעה טכנולוגית מול סוכנות האם. <strong>נרשמים באופן עצמאי בתוך דקה</strong>, ומתחילים לעבוד מיד.</div>
-      </details>
-      <details class="faq reveal">
-        <summary>האם ניתן לעבוד עם פריליו מהטלפון הנייד?<span class="q-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
-        <div class="ans">בהחלט. פריליו <strong>מותאמת באופן מלא לעבודה מהנייד</strong>, כך שניתן לעדכן סטטוסים, לבדוק מי דורש טיפול היום ולנהל את המועמדים מכל מקום — גם כשאתם בדרכים או בין פגישות.</div>
-      </details>
+    <div class="plan hot">
+      <span class="hot-tag">הכי פופולרי</span>
+      <h3>Pro</h3>
+      <div class="price">₪49 <small>לחודש</small></div>
+      <ul>
+        <li>מועמדים ללא הגבלה</li>
+        <li>100 דירוגי AI בחודש</li>
+        <li>3 משרות פתוחות עם קישור ציבורי</li>
+        <li>כל יכולות התוכנית החינמית</li>
+      </ul>
+      <a class="btn btn-brand" href="https://prelio-crm.vercel.app/">לבחור Pro</a>
+    </div>
+    <div class="plan">
+      <h3>ללא הגבלה</h3>
+      <div class="price">₪99 <small>לחודש</small></div>
+      <ul>
+        <li>מועמדים ומשרות בלי מכסות</li>
+        <li>AI ללא הגבלה (שימוש הוגן)</li>
+        <li>לסוכנויות ולמגייסים כבדים</li>
+        <li>עדיפות בתמיכה</li>
+      </ul>
+      <a class="btn btn-ghost" href="https://prelio-crm.vercel.app/">לבחור ללא הגבלה</a>
     </div>
   </div>
+  <p class="pricing-note">המחירים כוללים את כל העדכונים. אפשר לבטל בכל רגע.</p>
 </section>
 
-<!-- FOOTER CTA -->
-<section class="footcta">
-  <div class="wrap">
-    <div class="footcta-box reveal">
-      <div class="fx"></div>
-      <h2>ההשמה הבאה שלך מחכה אי-שם בוואטסאפ</h2>
-      <p>אל תיתן לה ללכת לאיבוד בין ההודעות. תתחילו לעבוד חכם, לרכז את שלב הטרום-הגשה במקום אחד — <strong>ולראות את התוצאות בשורת העמלות</strong>.</p>
-      <a href="https://prelio-crm.vercel.app/" class="btn btn-primary btn-lg">פתחו חשבון בפריליו עכשיו — חינם לגמרי</a>
-    </div>
+<!-- ═══════ סיום ═══════ -->
+<div class="wrap">
+  <div class="final">
+    <h2>המועמד הבא שלך כבר מחכה בקישור.</h2>
+    <p>הרשמה של דקה, מאגר מסודר לכל החיים.</p>
+    <a class="btn btn-white" href="https://prelio-crm.vercel.app/">פתיחת חשבון בחינם</a>
   </div>
-</section>
+</div>
 
-<!-- FOOTER -->
-<footer class="site">
-  <div class="wrap foot-inner">
-    <div class="foot-brand">
-      <svg class="mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="64" height="64" rx="14" fill="url(#g)"/>
-        <line x1="24" y1="17" x2="24" y2="49" stroke="#4f3d7a" stroke-width="9" stroke-linecap="round"/>
-        <path d="M24 17 H33 A11 11 0 0 1 33 39 H24" fill="none" stroke="#4f3d7a" stroke-width="9" stroke-linecap="round"/>
-      </svg>
-      Prelio
-    </div>
-    <div class="foot-links">
-      <a href="#pain">למה פריליו?</a>
-      <a href="#demo">איך זה עובד</a>
-      <a href="#faq">שאלות נפוצות</a>
-      <a href="accessibility.html">נגישות</a>
-      <a href="privacy.html">מדיניות פרטיות</a>
-      <a href="https://prelio-crm.vercel.app/">כניסה למערכת</a>
-    </div>
-    <div class="foot-copy">© 2026 Prelio · כל הזכויות שמורות</div>
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="/"><img src="data:image/png;base64,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" alt="">Prelio</a>
+    <a href="/privacy.html">מדיניות פרטיות</a>
+    <a href="/terms.html">תנאי שימוש</a>
+    <a href="mailto:ranko55@gmail.com">צרו קשר</a>
+    <span>Prelio © 2026</span>
   </div>
 </footer>
 
-<button class="to-top" id="toTop" aria-label="חזרה לראש העמוד" title="חזרה למעלה">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-</button>
-
-<!-- accessibility widget -->
-<button class="a11y-btn" id="a11yBtn" aria-label="תפריט נגישות" aria-expanded="false" title="נגישות">
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M19 8h-5v13a1 1 0 0 1-2 0v-6h-0a1 1 0 0 1-0 0v6a1 1 0 0 1-2 0V8H5a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2z"/></svg>
-</button>
-<div class="a11y-panel" id="a11yPanel" role="dialog" aria-label="אפשרויות נגישות">
-  <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="4" r="2"/><path d="M19 8h-5v13a1 1 0 0 1-2 0v-6a1 1 0 0 0-2 0v6a1 1 0 0 1-2 0V8H5a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2z"/></svg>אפשרויות נגישות</h3>
-  <p class="sub">התאמת האתר לצרכים שלך</p>
-  <div class="a11y-grid">
-    <button class="a11y-opt" data-a11y="font-dec" aria-label="הקטן טקסט"><span class="fs-num">א−</span>הקטן טקסט</button>
-    <button class="a11y-opt" data-a11y="font-inc" aria-label="הגדל טקסט"><span class="fs-num">א+</span>הגדל טקסט</button>
-    <button class="a11y-opt" data-a11y="contrast" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor"/></svg>ניגודיות</button>
-    <button class="a11y-opt" data-a11y="links" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>הדגש קישורים</button>
-    <button class="a11y-opt" data-a11y="readable" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>גופן קריא</button>
-    <button class="a11y-opt" data-a11y="motion" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z" fill="currentColor"/></svg>עצור תנועה</button>
-    <button class="a11y-opt" data-a11y="cursor" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 8-6 1.5-2.5 6z" fill="currentColor"/></svg>סמן גדול</button>
-    <a class="a11y-opt" href="accessibility.html" style="text-decoration:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>הצהרת נגישות</a>
-  </div>
-  <button class="a11y-reset" id="a11yReset"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>איפוס הגדרות</button>
-</div>
-
 <script>
-  const nav = document.getElementById('nav');
-  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), { passive: true });
-  document.getElementById('menuToggle').addEventListener('click', () => document.getElementById('pain').scrollIntoView({ behavior: 'smooth' }));
-
-  const chips = document.querySelectorAll('.mock-filters .chip');
-  const cands = document.querySelectorAll('#candList .cand');
-  chips.forEach(chip => chip.addEventListener('click', () => {
-    chips.forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    const f = chip.dataset.filter;
-    cands.forEach(cd => cd.classList.toggle('hidden', !(f === 'all' || cd.dataset.cat.split(' ').includes(f))));
-  }));
-
-  const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 3 * 0.08) + 's'; io.observe(el); });
-
-  // scroll-to-top
-  const toTop = document.getElementById('toTop');
-  addEventListener('scroll', () => toTop.classList.toggle('show', scrollY > 500), { passive: true });
-  toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
-
-  // ===== accessibility widget =====
-  (function () {
-    const btn = document.getElementById('a11yBtn'), panel = document.getElementById('a11yPanel');
-    const root = document.documentElement;
-    const KEY = 'prelio_a11y';
-    let state = { fs: 0, contrast: false, links: false, readable: false, motion: false, cursor: false };
-    try { const s = localStorage.getItem(KEY); if (s) state = Object.assign(state, JSON.parse(s)); } catch (e) {}
-    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
-
-    const FS = { '-1': 0.9, '0': 1, '1': 1.15, '2': 1.3 };
-    const fsTargets = 'p,li,h1,h2,h3,h4,a,button,summary,input,label,.hero-sub,.eyebrow,.sec-eyebrow,.foot-copy,.nm,.meta,.pill,.due-badge';
-    function applyFont() {
-      const factor = FS[state.fs] || 1;
-      document.querySelectorAll(fsTargets).forEach(el => {
-        if (el.closest('#a11yPanel') || el.closest('#a11yBtn')) return;
-        if (el.dataset.fsOrig === undefined) el.dataset.fsOrig = parseFloat(getComputedStyle(el).fontSize);
-        el.style.fontSize = (el.dataset.fsOrig * factor) + 'px';
-      });
-    }
-    function apply() {
-      root.classList.toggle('a11y-contrast', state.contrast);
-      root.classList.toggle('a11y-links', state.links);
-      root.classList.toggle('a11y-readable', state.readable);
-      root.classList.toggle('a11y-no-motion', state.motion);
-      root.classList.toggle('a11y-cursor', state.cursor);
-      applyFont();
-      // reflect button states
-      document.querySelectorAll('.a11y-opt[data-a11y]').forEach(o => {
-        const k = o.dataset.a11y;
-        if (['contrast','links','readable','motion','cursor'].includes(k)) {
-          o.classList.toggle('on', state[k]); o.setAttribute('aria-pressed', state[k]);
-        }
-      });
-      const dec = document.querySelector('[data-a11y=font-dec]'), inc = document.querySelector('[data-a11y=font-inc]');
-      if (dec) dec.classList.toggle('on', state.fs < 0);
-      if (inc) inc.classList.toggle('on', state.fs > 0);
-    }
-    apply();
-
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const open = panel.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open);
-    });
-    document.addEventListener('click', (e) => {
-      if (!panel.contains(e.target) && e.target !== btn && panel.classList.contains('open')) {
-        panel.classList.remove('open'); btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-    addEventListener('keydown', (e) => { if (e.key === 'Escape' && panel.classList.contains('open')) { panel.classList.remove('open'); btn.setAttribute('aria-expanded','false'); btn.focus(); } });
-
-    document.querySelectorAll('.a11y-opt[data-a11y]').forEach(opt => {
-      opt.addEventListener('click', () => {
-        const k = opt.dataset.a11y;
-        if (k === 'font-inc') state.fs = Math.min(2, state.fs + 1);
-        else if (k === 'font-dec') state.fs = Math.max(-1, state.fs - 1);
-        else state[k] = !state[k];
-        apply(); save();
-      });
-    });
-    document.getElementById('a11yReset').addEventListener('click', () => {
-      // clear inline font sizes
-      document.querySelectorAll('[data-fs-orig]').forEach(el => { el.style.fontSize = ''; });
-      state = { fs: 0, contrast: false, links: false, readable: false, motion: false, cursor: false };
-      apply(); save();
-    });
-  })();
-
-  // ===== animated AI demo sequence =====
-  (function () {
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const stage = document.getElementById('adStage');
-    if (!stage) return;
-    const toast = document.getElementById('adToast'), toastTxt = document.getElementById('adToastTxt'), toastIc = document.getElementById('adToastIc');
-    const listView = document.getElementById('adListView'), aiPanel = document.getElementById('adAi');
-    const roseChip = document.getElementById('adRoseChip');
-    const cands = [...document.querySelectorAll('#adCandList .ad-cand')];
-    const jobTxt = document.getElementById('adJobTxt'), cursor = document.getElementById('adCursor');
-    const aiLabel = document.getElementById('adAiLabel'), match = document.getElementById('adMatch');
-    const ringFill = document.getElementById('adRingFill'), ringVal = document.getElementById('adRingVal');
-    const ICON_GLOBE = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
-    const ICON_CLOCK = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 13.5"/></svg>';
-    const ICON_SPARK = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>';
-    const wait = ms => new Promise(r => setTimeout(r, ms));
-
-    function showToast(txt, icon, cls) {
-      toast.className = 'ademo-toast ' + (cls || '');
-      toastIc.innerHTML = icon; toastTxt.textContent = txt;
-      requestAnimationFrame(() => toast.classList.add('show'));
-    }
-    const hideToast = () => toast.classList.remove('show');
-
-    function reset() {
-      hideToast();
-      aiPanel.classList.remove('show');
-      roseChip.classList.remove('pulse', 'active-rose');
-      document.getElementById('adRoseCnt').textContent = '(2)';
-      cands.forEach(c => { c.classList.remove('fade', 'collapse'); c.classList.remove('enter', 'in'); });
-      // reset AI internals
-      jobTxt.textContent = ''; cursor.style.display = 'inline-block';
-      aiLabel.classList.remove('show'); match.classList.remove('show');
-      ringFill.style.strokeDashoffset = '157'; ringVal.textContent = '0%';
-    }
-
-    async function typeText(el, text, speed) {
-      for (let i = 0; i <= text.length; i++) { el.textContent = text.slice(0, i); await wait(speed); }
-    }
-
-    async function animateRing(target) {
-      const circ = 157; let cur = 0;
-      return new Promise(res => {
-        const step = () => {
-          cur += 2; if (cur > target) cur = target;
-          ringFill.style.strokeDashoffset = (circ - (circ * cur / 100)).toFixed(1);
-          ringVal.textContent = cur + '%';
-          if (cur < target) requestAnimationFrame(step); else res();
-        };
-        step();
-      });
-    }
-
-    async function sequence() {
-      reset();
-      await wait(600);
-
-      // SCENE 1 — candidate enters from form
-      const yossi = cands.find(c => c.dataset.name === 'yossi');
-      // start: hide the "new" candidate by injecting michal at top
-      const michal = document.createElement('div');
-      michal.className = 'ad-cand enter';
-      michal.innerHTML = '<div class="av">מל</div><div class="info"><div class="nm">מיכל לוי <span class="src">' + ICON_GLOBE + '</span></div><div class="meta">רמת גן · אדמיניסטרציה</div></div><span class="ad-pill new">חדש</span>';
-      document.getElementById('adCandList').prepend(michal);
-      await wait(200);
-      showToast('מועמדת חדשה נכנסה מהטופס הציבורי', ICON_GLOBE, '');
-      requestAnimationFrame(() => michal.classList.add('in'));
-      await wait(2600);
-      hideToast();
-      await wait(500);
-
-      // SCENE 2 — red filter
-      roseChip.classList.add('pulse');
-      await wait(300);
-      roseChip.classList.add('active-rose');
-      showToast('2 מועמדים דורשים טיפול היום', ICON_CLOCK, 'rose');
-      // fade+collapse the non-due
-      cands.forEach(c => { if (c.dataset.role !== 'due') c.classList.add('collapse'); });
-      michal.classList.add('collapse');
-      await wait(2800);
-      hideToast();
-      await wait(400);
-
-      // restore list for cleanliness before AI
-      michal.remove();
-      cands.forEach(c => c.classList.remove('collapse'));
-      roseChip.classList.remove('active-rose', 'pulse');
-      document.getElementById('adRoseCnt').textContent = '(2)';
-      await wait(300);
-
-      // SCENE 3 — AI assistant
-      aiPanel.classList.add('show');
-      await wait(700);
-      cursor.style.display = 'inline-block';
-      await typeText(jobTxt, 'דרוש/ה מנהל/ת מכירות B2B — ניסיון 3+ שנים', reduce ? 0 : 42);
-      await wait(400);
-      cursor.style.display = 'none';
-      showToast('העוזר מצא התאמה מעולה מתוך המאגר', ICON_SPARK, 'green');
-      aiLabel.classList.add('show');
-      await wait(300);
-      match.classList.add('show');
-      await wait(500);
-      await animateRing(92);
-      await wait(2600);
-      hideToast();
-      await wait(500);
-
-      // loop
-      requestAnimationFrame(sequence);
-    }
-
-    if (reduce) {
-      // static end-state: show AI match at 92%
-      aiPanel.classList.add('show'); jobTxt.textContent = 'דרוש/ה מנהל/ת מכירות B2B — ניסיון 3+ שנים';
-      cursor.style.display = 'none'; aiLabel.classList.add('show'); match.classList.add('show');
-      ringFill.style.strokeDashoffset = (157 - 157 * 0.92).toFixed(1); ringVal.textContent = '92%';
-      return;
-    }
-
-    // start only when demo scrolls into view
-    const demoIo = new IntersectionObserver((es) => {
-      es.forEach(e => { if (e.isIntersecting) { demoIo.disconnect(); sequence(); } });
-    }, { threshold: 0.3 });
-    demoIo.observe(stage);
-  })();
+(function(){
+  const steps=[...document.querySelectorAll('.step')];
+  const scenes=[...document.querySelectorAll('.scene')];
+  let cur=0,timer=null;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show(i){
+    cur=i;
+    steps.forEach((s,k)=>{s.classList.toggle('on',k===i);const p=s.querySelector('.prog');p.style.animation='none';void p.offsetWidth;p.style.animation='';});
+    scenes.forEach((s,k)=>s.classList.toggle('on',k===i));
+  }
+  function auto(){timer=setInterval(()=>show((cur+1)%scenes.length),4200);}
+  steps.forEach((s,i)=>s.addEventListener('click',()=>{clearInterval(timer);show(i);if(!reduced)auto();}));
+  if(!reduced)auto();
+})();
 </script>
 </body>
 </html>
