@@ -23,7 +23,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:clip}
 body{background:var(--bg);color:var(--ink);font-family:'Assistant',-apple-system,'Segoe UI',Arial,sans-serif;line-height:1.65;overflow-x:clip}
-.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:24px}
 h1,h2,h3{font-family:'Rubik','Assistant',sans-serif;letter-spacing:-.3px}
 a{color:inherit}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'Rubik';font-weight:600;font-size:15.5px;
@@ -36,7 +36,7 @@ a{color:inherit}
 
 /* ───── ניווט ───── */
 nav{position:sticky;top:0;z-index:50;background:rgba(251,250,255,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav-in{display:flex;align-items:center;gap:26px;padding:14px 0}
+.nav-in{display:flex;align-items:center;gap:26px;padding-block:14px}
 .logo{font-family:'Rubik';font-weight:800;font-size:21px;text-decoration:none;display:flex;align-items:center;gap:8px;letter-spacing:-.3px}
 .logo img{width:30px;height:30px;object-fit:contain}
 .nav-links{display:flex;gap:24px;margin-inline-start:auto;align-items:center}
@@ -108,7 +108,7 @@ nav{position:sticky;top:0;z-index:50;background:rgba(251,250,255,.85);backdrop-f
 .rank span{font-size:11.5px;color:var(--muted)}
 
 /* ───── מדורים ───── */
-.sec{padding:84px 0 10px}
+.sec{padding-block:84px 10px}
 .sec-eyebrow{font-weight:700;font-size:13px;letter-spacing:.6px;color:#d420b0;text-transform:uppercase}
 .sec h2{font-size:clamp(27px,3.4vw,38px);font-weight:800;line-height:1.2;margin:8px 0 12px}
 .sec .lead{color:var(--muted);font-size:17px;max-width:62ch}
@@ -203,6 +203,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 36px;background:var(--bg)
   .plans{grid-template-columns:1fr}
 }
 @media(max-width:560px){
+  .wrap{padding-inline:18px}
   .feats{grid-template-columns:1fr}
   .hero{padding-top:44px}
   .hero::before{display:none}
@@ -213,7 +214,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 36px;background:var(--bg)
   .st,.flip span,.pill{font-size:10.5px;padding:3px 8px}
   .scene{padding:16px}
   .stage{min-height:400px}
-  .sec{padding:60px 0 8px}
+  .sec{padding-block:60px 8px}
   .final{padding:44px 20px}
 }
 .sbar{height:9px;background:#efe9f6;border-radius:6px;margin-top:6px;overflow:hidden}
