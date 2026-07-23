@@ -1,12 +1,45 @@
 <!DOCTYPE html>
+<!-- Prelio marketing site v1.1.0 — feature parity + SEO foundation + blog -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prelio — CRM לסוכני גיוס: מועמדים, משרות ו-AI במקום אחד</title>
-<meta name="description" content="פרליו מרכזת את המועמדים, הפולו-אפים והמשרות שלך במקום אחד — עם עוזר AI שמדרג התאמה. מתחילים בחינם.">
+<title>פריליו — מערכת CRM לסוכני גיוס והשמה | ניהול מועמדים בעברית</title>
+<meta name="description" content="פריליו היא מערכת CRM לגיוס בעברית לסוכני השמה עצמאיים: ניהול מועמדים וקורות חיים, פולו-אפ, תבניות וואטסאפ, טפסי קליטה ועוזר AI שמדרג התאמה. 14 ימי ניסיון.">
+<link rel="canonical" href="https://prelio-site.vercel.app/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Prelio">
+<meta property="og:locale" content="he_IL">
+<meta property="og:title" content="פריליו — מערכת CRM לסוכני גיוס והשמה">
+<meta property="og:description" content="מערכת ניהול מועמדים בעברית לסוכני גיוס והשמה: תיקי מועמדים, פולו-אפ, תבניות וואטסאפ, טפסי קליטה ועוזר AI. 14 ימי ניסיון בחינם.">
+<meta property="og:url" content="https://prelio-site.vercel.app/">
+<meta property="og:image" content="https://prelio-site.vercel.app/og-cover.png">
+<meta property="og:image:secure_url" content="https://prelio-site.vercel.app/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="פריליו — מערכת CRM לגיוס">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="פריליו — מערכת CRM לסוכני גיוס והשמה">
+<meta name="twitter:description" content="ניהול מועמדים בעברית לסוכני גיוס והשמה, עם וואטסאפ, טפסי קליטה ועוזר AI.">
+<meta name="twitter:image" content="https://prelio-site.vercel.app/og-cover.png">
+
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <meta name="theme-color" content="#9270fc">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;800&family=Assistant:wght@400;600;700&display=swap">
+
+<!-- JSON-LD: SoftwareApplication + Organization -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Prelio","alternateName":"פריליו","description":"מערכת CRM לגיוס בעברית לסוכני השמה: ניהול מועמדים וקורות חיים, פולו-אפ, תבניות וואטסאפ, טפסי קליטה ועוזר AI לדירוג התאמה.","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://prelio-site.vercel.app/","inLanguage":"he","offers":[{"@type":"Offer","name":"סטארט","price":"49","priceCurrency":"ILS"},{"@type":"Offer","name":"פרו","price":"99","priceCurrency":"ILS"},{"@type":"Offer","name":"אולטרה","price":"129","priceCurrency":"ILS"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Prelio","alternateName":"פריליו","url":"https://prelio-site.vercel.app/","logo":"https://prelio-site.vercel.app/og-cover.png","contactPoint":{"@type":"ContactPoint","email":"ranko55@gmail.com","contactType":"customer support","availableLanguage":["he","en"]}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;800&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
@@ -268,6 +301,7 @@ html[lang=en] body{--x:0}
       <a href="#how" class="hideS" data-i18n="navHow">איך זה עובד</a>
       <a href="#features" class="hideS" data-i18n="navFeat">יכולות</a>
       <a href="#pricing" data-i18n="navPrice">מחירים</a>
+      <a href="/blog/" data-i18n="navBlog">בלוג</a>
       <a href="#contact" class="hideS" data-i18n="navContact">צור קשר</a>
       <button class="btn btn-ghost nav-cta lang-btn" aria-label="Switch language">EN</button>
       <a class="btn btn-brand nav-cta" href="https://prelio-crm.vercel.app/" data-i18n="navLogin">כניסה למערכת</a>
@@ -485,6 +519,13 @@ html[lang=en] body{--x:0}
     <div class="feat"><span class="chip" style="background:var(--chip-orange-bg);color:var(--chip-orange)">פולו-אפ</span><span data-i18n="feat2"><b>אף מועמד לא נשכח</b><p>קובעים תאריך חזרה והמערכת מזכירה. מה שדחוף היום מחכה בראש המסך.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">AI</span><span data-i18n="feat3"><b>דירוג התאמה בלחיצה</b><p>מדביקים דרישות משרה או לוחצים על משרה קיימת, ומקבלים את המתאימים ביותר, מדורגים ומנומקים.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-green-bg);color:var(--chip-green)">טפסים</span><span data-i18n="feat4"><b>קישור אישי וקישור לכל משרה</b><p>מועמדים ממלאים לבד מהנייד, כולל קו"ח, ונכנסים ישר למאגר. כפילויות מזוהות אוטומטית.</p></span></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">עוזר AI</span><span data-i18n="feat5"><b>עוזר AI זמין מכל מסך</b><p>בוט עזרה חינם בכל מסך במערכת — עונה בעברית על "איך עושים" ומקפיץ אותך ישר למקום הנכון.</p></span></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">מדריך</span><span data-i18n="feat6"><b>סיור מודרך אינטראקטיבי</b><p>מדריך צעד-אחר-צעד שמסביר כל יכולת — עם כפתור "קח אותי לשם" שקופץ ישר לפיצ'ר.</p></span></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">חשבון</span><span data-i18n="feat7"><b>חשבון לקוח מלא</b><p>ניהול המנוי, החלפת חבילה, צפייה בחשבוניות והחלפת אמצעי תשלום — הכול מתוך המערכת.</p></span></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">שיתוף</span><span data-i18n="feat8"><b>טפסים ציבוריים עם תצוגה מקדימה</b><p>קישור קליטה לכל משרה — עם כרטיס תצוגה מקדימה מעוצב בשיתוף בוואטסאפ ובפייסבוק.</p></span></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">מייל</span><span data-i18n="feat9"><b>מיילי אישור אוטומטיים</b><p>מועמד שמשאיר מייל מקבל אישור ממותג אוטומטית — והתשובה חוזרת ישירות אליך.</p></span></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">סטטוסים</span><span data-i18n="feat10"><b>סנכרון סטטוסים חכם</b><p>ארבעה סטטוסי בסיס לכל אורך התהליך, ואפשר להוסיף סטטוסים אישיים משלך — כל אחד עם צבע.</p></span></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">אבטחה</span><span data-i18n="feat11"><b>יומן פעולות ואבטחה</b><p>יומן פעולות מלא ואבטחת מידע ברמת השורה (RLS) — הנתונים של כל סוכן מבודדים ומוגנים.</p></span></div>
   </div>
 </section>
 
@@ -530,6 +571,7 @@ html[lang=en] body{--x:0}
     </div>
   </div>
   <p class="pricing-note" data-i18n="priceNote">🔁 כל החבילות בחיוב חודשי מתחדש, וכוללות את כל העדכונים. אפשר לבטל בכל רגע מתוך המערכת — הגישה נשמרת עד תום התקופה ששולמה.</p>
+  <p class="pricing-note" data-i18n="vatNote" style="margin-top:6px">המחירים בתוספת מע"מ ככל שיחול.</p>
 </section>
 
 <!-- ═══════ צור קשר ═══════ -->
@@ -564,6 +606,7 @@ html[lang=en] body{--x:0}
 <footer>
   <div class="wrap foot">
     <a class="logo" href="/"><img src="data:image/png;base64,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" alt="">Prelio</a>
+    <a href="/blog/" data-i18n="fBlog">בלוג</a>
     <a href="/privacy.html" data-i18n="fPriv">מדיניות פרטיות</a>
     <a href="/terms.html" data-i18n="fTerms">תנאי שימוש</a>
     <a href="#contact" data-i18n="fContact">צרו קשר</a>
@@ -639,7 +682,7 @@ html[lang=en] body{--x:0}
 /* ─── עברית / English ─── */
 (function(){
   const EN={
-    navHow:'How it works',navFeat:'Features',navPrice:'Pricing',navContact:'Contact',navLogin:'Sign in',
+    navHow:'How it works',navFeat:'Features',navPrice:'Pricing',navBlog:'Blog',navContact:'Contact',navLogin:'Sign in',fBlog:'Blog',
     eyebrow:'\u2726 Built by a recruiter, for recruiters',
     h1:'From first application to placement.<br><em>All in one place.</em>',
     sub:'Prelio is a simple, smart recruiting CRM: an organized candidate pool, reminders that never slip, a public link for every job, and an AI assistant that ranks the best matches for you.',
@@ -662,6 +705,13 @@ html[lang=en] body{--x:0}
     feat2:'<b>No candidate is forgotten</b><p>Set a callback date and the system reminds you. Today\u2019s urgent items wait at the top of the screen.</p>',
     feat3:'<b>AI match ranking in one click</b><p>Paste job requirements or click an existing job, and get the best matches, ranked and explained.</p>',
     feat4:'<b>A personal link and a link per job</b><p>Candidates fill in their own details from their phone, CV included, straight into your pool. Duplicates are detected automatically.</p>',
+    feat5:'<b>An AI assistant on every screen</b><p>A free help bot on every screen — answers "how do I…" and jumps you straight to the right place.</p>',
+    feat6:'<b>Interactive guided tour</b><p>A step-by-step guide to every capability — with a "take me there" button that jumps straight to the feature.</p>',
+    feat7:'<b>A full customer account</b><p>Manage your subscription, switch plans, view invoices and replace your payment method — all from inside the app.</p>',
+    feat8:'<b>Public forms with rich previews</b><p>An intake link for every job — with a designed preview card when shared on WhatsApp and Facebook.</p>',
+    feat9:'<b>Automatic confirmation emails</b><p>A candidate who leaves an email gets a branded confirmation automatically — and their reply comes straight back to you.</p>',
+    feat10:'<b>Smart status sync</b><p>Four base statuses across the whole process, plus your own personal statuses — each with its color.</p>',
+    feat11:'<b>Audit log &amp; security</b><p>A full action log and row-level security (RLS) — every agent’s data is isolated and protected.</p>',
     priceEye:'PRICING',priceH2:'Pick a plan. Change it whenever you want.',
     priceLead:'Every new user gets a full 14-day trial, no credit card needed.',
     p1n:'Start',perMonth0:'/ month',p1btn:'Choose Start',
@@ -671,6 +721,7 @@ html[lang=en] body{--x:0}
     p3n:'Ultra',perMonth2:'/ month',p3btn:'Choose Ultra',
     p3f:'<li>1,000 candidates</li><li>750 AI runs a month</li><li>20 public jobs</li><li>For agencies &amp; heavy recruiters</li>',
     priceNote:'All plans bill monthly on a recurring basis and include every update. Cancel anytime from inside the app — access is kept until the end of the paid period.',
+    vatNote:'Prices are subject to VAT where applicable.',
     cEye:'INTERESTED? TALK TO US',cH2:'We\u2019d love to hear from you.',
     cLead:'A question, a demo request, or just checking if Prelio fits you — leave your details and we\u2019ll get back to you. This form, by the way, runs on Prelio itself \ud83d\ude09',
     cName:'Full name *',cPhone:'Phone *',cEmail:'Email',cMsg:'What are you interested in?',cSend:'Send',
@@ -690,7 +741,7 @@ html[lang=en] body{--x:0}
     });
     document.documentElement.lang=l==='en'?'en':'he';
     document.documentElement.dir=l==='en'?'ltr':'rtl';
-    document.title=l==='en'?'Prelio \u2014 Recruiting CRM: candidates, jobs & AI in one place':'Prelio \u2014 CRM \u05dc\u05e1\u05d5\u05db\u05e0\u05d9 \u05d2\u05d9\u05d5\u05e1: \u05de\u05d5\u05e2\u05de\u05d3\u05d9\u05dd, \u05de\u05e9\u05e8\u05d5\u05ea \u05d5-AI \u05d1\u05de\u05e7\u05d5\u05dd \u05d0\u05d7\u05d3';
+    document.title=l==='en'?'Prelio \u2014 Recruiting CRM for staffing agents | candidate management':'\u05e4\u05e8\u05d9\u05dc\u05d9\u05d5 \u2014 \u05de\u05e2\u05e8\u05db\u05ea CRM \u05dc\u05e1\u05d5\u05db\u05e0\u05d9 \u05d2\u05d9\u05d5\u05e1 \u05d5\u05d4\u05e9\u05de\u05d4 | \u05e0\u05d9\u05d4\u05d5\u05dc \u05de\u05d5\u05e2\u05de\u05d3\u05d9\u05dd \u05d1\u05e2\u05d1\u05e8\u05d9\u05ea';
     langBtn.textContent=l==='en'?'\u05e2\u05d1':'EN';
     try{localStorage.setItem('prelio_site_lang',l)}catch(e){}
   }
