@@ -12,9 +12,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
-const SITE = 'https://prelio-site.vercel.app';
+const SITE = 'https://prelio.work';
 const OG_FALLBACK = `${SITE}/og-cover.png`;
-const LOGO = 'https://prelio-site.vercel.app/og-cover.png';
+const LOGO = 'https://prelio.work/og-cover.png';
 
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -117,7 +117,7 @@ footer a{margin-inline:8px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>`;
 
-const NAV = `<nav><div class="wrap wrap-wide nav-in"><a class="logo" href="/">Prelio</a><div class="nav-links"><a href="/#features">יכולות</a><a href="/#pricing">מחירים</a><a href="/blog/">בלוג</a><a class="btn btn-brand" href="https://prelio-crm.vercel.app/">כניסה למערכת</a></div></div></nav>`;
+const NAV = `<nav><div class="wrap wrap-wide nav-in"><a class="logo" href="/">Prelio</a><div class="nav-links"><a href="/#features">יכולות</a><a href="/#pricing">מחירים</a><a href="/blog/">בלוג</a><a class="btn btn-brand" href="https://app.prelio.work/">כניסה למערכת</a></div></div></nav>`;
 const FOOT = `<footer><div class="wrap wrap-wide"><a href="/">פריליו</a><a href="/blog/">בלוג</a><a href="/privacy.html">פרטיות</a><a href="/terms.html">תנאים</a><span>· Prelio © 2026</span></div></footer>`;
 
 function page({ title, description, canonical, ogImage, head = '', bodyClass = '', content }) {
