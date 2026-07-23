@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Prelio marketing site v1.2.1 — blog frontmatter schema (slug/author/ogImage/published) + generated sitemap -->
+<!-- Prelio marketing site v1.3.0 — pricing 49/99/129 + CTA micro-copy + disclosure + FAQ (FAQPage JSON-LD); no free-plan claims -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Prelio">
 <meta property="og:locale" content="he_IL">
 <meta property="og:title" content="פריליו — מערכת CRM לסוכני גיוס והשמה">
-<meta property="og:description" content="מערכת ניהול מועמדים בעברית לסוכני גיוס והשמה: תיקי מועמדים, פולו-אפ, תבניות וואטסאפ, טפסי קליטה ועוזר AI. 14 ימי ניסיון בחינם.">
+<meta property="og:description" content="מערכת ניהול מועמדים בעברית לסוכני גיוס והשמה: תיקי מועמדים, פולו-אפ, תבניות וואטסאפ, טפסי קליטה ועוזר AI. 14 יום ניסיון, בלי כרטיס אשראי.">
 <meta property="og:url" content="https://prelio.work/">
 <meta property="og:image" content="https://prelio.work/og-cover.png">
 <meta property="og:image:secure_url" content="https://prelio.work/og-cover.png">
@@ -39,6 +39,9 @@
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"Prelio","alternateName":"פריליו","url":"https://prelio.work/","logo":"https://prelio.work/og-cover.png","contactPoint":{"@type":"ContactPoint","email":"ranko55@gmail.com","contactType":"customer support","availableLanguage":["he","en"]}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"he","mainEntity":[{"@type":"Question","name":"האם צריך כרטיס אשראי כדי להתחיל?","acceptedAnswer":{"@type":"Answer","text":"לא. הניסיון הוא 14 יום מלאים בלי כרטיס אשראי. פרטי התשלום נמסרים רק אם בוחרים להמשיך."}},{"@type":"Question","name":"מה קורה בסוף הניסיון?","acceptedAnswer":{"@type":"Answer","text":"בוחרים אחד משלושת המסלולים. אם לא בוחרים — החשבון ננעל, והנתונים נשמרים 30 יום למקרה שתחזרו."}},{"@type":"Question","name":"אפשר לעבור בין מסלולים?","acceptedAnswer":{"@type":"Answer","text":"כן, בכל עת ובאופן עצמאי מתוך לשונית \"חשבון\" — למעלה או למטה."}},{"@type":"Question","name":"איך מבטלים?","acceptedAnswer":{"@type":"Answer","text":"בלחיצה אחת מתוך המערכת, בלי לדבר עם אף אחד. הגישה נמשכת עד סוף התקופה ששולמה."}},{"@type":"Question","name":"אפשר להעביר את המועמדים שכבר יש לי?","acceptedAnswer":{"@type":"Answer","text":"כן. ייבוא מקובץ CSV או אקסל, וגם ייצוא של כל הנתונים החוצה בכל רגע — המידע שלכם נשאר שלכם."}},{"@type":"Question","name":"המידע של המועמדים מאובטח?","acceptedAnswer":{"@type":"Answer","text":"המערכת בנויה עם הפרדת הרשאות ברמת בסיס הנתונים, כך שכל מגייס רואה רק את המועמדים שלו. פרטי אשראי לא נשמרים אצלנו כלל."}}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -211,6 +214,19 @@ nav{position:sticky;top:0;z-index:50;background:rgba(251,250,255,.85);backdrop-f
 .plan li{font-size:14.5px;padding:5.5px 0;display:flex;gap:9px;align-items:baseline}
 .plan li::before{content:'✓';color:var(--chip-green);font-weight:800;font-size:13px}
 .pricing-note{margin-top:18px;font-size:13.5px;color:var(--muted);text-align:center}
+.plan-for{font-size:13.5px;color:var(--muted);margin-top:4px}
+.plan li.inherit{font-weight:700;color:var(--ink)}
+.plan li.inherit::before{content:'↑';color:var(--brand)}
+.cta-micro{font-size:13.5px;color:var(--muted);margin-top:10px}
+.cta-micro.on-dark{color:rgba(255,255,255,.85)}
+.disclosure{margin-top:16px;font-size:13px;line-height:1.7;color:var(--muted);max-width:74ch;margin-inline:auto;text-align:center}
+.faq{margin-top:14px;display:grid;gap:10px;max-width:78ch}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:2px 18px;box-shadow:var(--sh-sm)}
+.faq summary{cursor:pointer;font-weight:700;font-size:15.5px;padding:14px 0;list-style:none;display:flex;gap:10px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'+';color:var(--brand);font-weight:800;font-size:18px;line-height:1}
+.faq details[open] summary::before{content:'−'}
+.faq details p{font-size:14.5px;color:var(--muted);padding:0 0 15px 0;margin:0}
 
 /* ───── סיום ותחתית ───── */
 .final{margin:90px 0 80px;background:linear-gradient(135deg,#2d2438,#45317f);color:#fff;border-radius:22px;padding:60px 32px;text-align:center;box-shadow:0 24px 60px -20px rgba(74,53,133,.45);position:relative;overflow:hidden}
@@ -317,9 +333,10 @@ html[lang=en] body{--x:0}
       <h1 data-i18n="h1">מהפנייה הראשונה ועד ההשמה.<br><em>הכל במקום אחד.</em></h1>
       <p class="sub" data-i18n="sub">פרליו היא מערכת CRM פשוטה וחכמה לגיוס: מאגר מועמדים מסודר, תזכורות שלא בורחות, קישור פנייה לכל משרה ועוזר AI שמדרג התאמה בשבילך.</p>
       <div class="hero-ctas">
-        <a class="btn btn-brand" href="https://app.prelio.work/" data-i18n="ctaStart">התחילו בחינם</a>
+        <a class="btn btn-brand" href="https://app.prelio.work/" data-i18n="ctaStart">התחילו 14 יום ניסיון</a>
         <a class="btn btn-ghost" href="#how" data-i18n="ctaHow">איך זה עובד?</a>
       </div>
+      <p class="cta-micro" data-i18n="ctaMicro">14 יום ניסיון · בלי כרטיס אשראי · ביטול בכל עת</p>
       <div class="hero-trust">
         <span data-i18n="trust1"><i class="ok">✓</i> 14 ימי Pro מתנה לכל נרשם</span>
         <span data-i18n="trust2"><i class="ok">✓</i> בלי כרטיס אשראי</span>
@@ -519,7 +536,7 @@ html[lang=en] body{--x:0}
     <div class="feat"><span class="chip" style="background:var(--chip-orange-bg);color:var(--chip-orange)">פולו-אפ</span><span data-i18n="feat2"><b>אף מועמד לא נשכח</b><p>קובעים תאריך חזרה והמערכת מזכירה. מה שדחוף היום מחכה בראש המסך.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">AI</span><span data-i18n="feat3"><b>דירוג התאמה בלחיצה</b><p>מדביקים דרישות משרה או לוחצים על משרה קיימת, ומקבלים את המתאימים ביותר, מדורגים ומנומקים.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-green-bg);color:var(--chip-green)">טפסים</span><span data-i18n="feat4"><b>קישור אישי וקישור לכל משרה</b><p>מועמדים ממלאים לבד מהנייד, כולל קו"ח, ונכנסים ישר למאגר. כפילויות מזוהות אוטומטית.</p></span></div>
-    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">עוזר AI</span><span data-i18n="feat5"><b>עוזר AI זמין מכל מסך</b><p>בוט עזרה חינם בכל מסך במערכת — עונה בעברית על "איך עושים" ומקפיץ אותך ישר למקום הנכון.</p></span></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">עוזר AI</span><span data-i18n="feat5"><b>עוזר AI זמין מכל מסך</b><p>בוט עזרה מובנה בכל מסך במערכת, בכל המסלולים — עונה בעברית על "איך עושים" ומקפיץ אותך ישר למקום הנכון.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">מדריך</span><span data-i18n="feat6"><b>סיור מודרך אינטראקטיבי</b><p>מדריך צעד-אחר-צעד שמסביר כל יכולת — עם כפתור "קח אותי לשם" שקופץ ישר לפיצ'ר.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">חשבון</span><span data-i18n="feat7"><b>חשבון לקוח מלא</b><p>ניהול המנוי, החלפת חבילה, צפייה בחשבוניות והחלפת אמצעי תשלום — הכול מתוך המערכת.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">שיתוף</span><span data-i18n="feat8"><b>טפסים ציבוריים עם תצוגה מקדימה</b><p>קישור קליטה לכל משרה — עם כרטיס תצוגה מקדימה מעוצב בשיתוף בוואטסאפ ובפייסבוק.</p></span></div>
@@ -532,46 +549,66 @@ html[lang=en] body{--x:0}
 <!-- ═══════ מחירים ═══════ -->
 <section class="wrap sec" id="pricing">
   <span class="sec-eyebrow" data-i18n="priceEye">מחירים</span>
-  <h2 data-i18n="priceH2">בוחרים חבילה. משנים מתי שרוצים.</h2>
-  <p class="lead" data-i18n="priceLead">כל נרשם חדש מקבל 14 ימי ניסיון מלאים, בלי כרטיס אשראי.</p>
+  <h2 data-i18n="priceH2">מסלולים ומחירים</h2>
+  <p class="lead" data-i18n="priceLead">כל המסלולים כוללים 14 יום ניסיון, בלי כרטיס אשראי.</p>
   <div class="plans">
     <div class="plan">
       <h3 data-i18n="p1n">סטארט</h3>
       <div class="price">₪49 <small data-i18n="perMonth0">לחודש</small></div>
+      <p class="plan-for" data-i18n="p1for">למגייס שמתחיל, או שמנהל מאגר קטן.</p>
       <ul data-i18n="p1f">
-        <li>100 מועמדים</li>
+        <li>עד 100 מועמדים</li>
         <li>100 הרצות AI בחודש</li>
-        <li>5 משרות ציבוריות</li>
-        <li>טופס מועמדים, פולו-אפים וייבוא/ייצוא</li>
+        <li>5 משרות עם קישור ציבורי</li>
+        <li>טופס קליטה ציבורי</li>
+        <li>תזכורות מעקב</li>
+        <li>ייבוא וייצוא CSV</li>
+        <li>בוט עזרה ומדריך למשתמש</li>
       </ul>
       <a class="btn btn-ghost" href="https://app.prelio.work/" data-i18n="p1btn">לבחור סטארט</a>
     </div>
     <div class="plan hot">
-      <span class="hot-tag" data-i18n="hotTag">הכי משתלם</span>
+      <span class="hot-tag" data-i18n="hotTag">הפופולרי</span>
       <h3 data-i18n="p2n">פרו</h3>
       <div class="price">₪99 <small data-i18n="perMonth1">לחודש</small></div>
+      <p class="plan-for" data-i18n="p2for">למגייס פעיל שעובד מול כמה מעסיקים.</p>
       <ul data-i18n="p2f">
-        <li>250 מועמדים</li>
+        <li class="inherit">כל מה שבסטארט, ובנוסף:</li>
+        <li>עד 250 מועמדים</li>
         <li>250 הרצות AI בחודש</li>
-        <li>10 משרות ציבוריות</li>
-        <li>כל מה שבסטארט <b>+ תבניות וואטסאפ</b></li>
+        <li>10 משרות עם קישור ציבורי</li>
+        <li><b>תבניות וואטסאפ</b> — עד 15 תבניות עם מילוי אוטומטי וחתימה קבועה</li>
       </ul>
       <a class="btn btn-brand" href="https://app.prelio.work/" data-i18n="p2btn">לבחור פרו</a>
     </div>
     <div class="plan">
       <h3 data-i18n="p3n">אולטרה</h3>
       <div class="price">₪129 <small data-i18n="perMonth2">לחודש</small></div>
+      <p class="plan-for" data-i18n="p3for">למי שמנהל מאגר גדול ונפח גיוס גבוה.</p>
       <ul data-i18n="p3f">
-        <li>1,000 מועמדים</li>
+        <li class="inherit">כל מה שבפרו, ובנוסף:</li>
+        <li>עד 1,000 מועמדים</li>
         <li>750 הרצות AI בחודש</li>
-        <li>20 משרות ציבוריות</li>
-        <li>לסוכנויות ולמגייסים כבדים</li>
+        <li>20 משרות עם קישור ציבורי</li>
       </ul>
       <a class="btn btn-ghost" href="https://app.prelio.work/" data-i18n="p3btn">לבחור אולטרה</a>
     </div>
   </div>
-  <p class="pricing-note" data-i18n="priceNote">🔁 כל החבילות בחיוב חודשי מתחדש, וכוללות את כל העדכונים. אפשר לבטל בכל רגע מתוך המערכת — הגישה נשמרת עד תום התקופה ששולמה.</p>
-  <p class="pricing-note" data-i18n="vatNote" style="margin-top:6px">המחירים בתוספת מע"מ ככל שיחול.</p>
+  <p class="disclosure" data-i18n="disclosure">המנוי מתחדש אוטומטית מדי חודש. אפשר לבטל בכל עת מתוך המערכת, והגישה נמשכת עד סוף התקופה ששולמה. לאחר ביטול, הנתונים נשמרים 30 יום ואז נמחקים לצמיתות. המחירים בתוספת מע"מ ככל שיחול. הסליקה מתבצעת דרך קארדקום — פרטי האשראי נשמרים אצלם ולא אצלנו.</p>
+</section>
+
+<!-- ═══════ שאלות נפוצות ═══════ -->
+<section class="wrap sec" id="faq" style="padding-top:40px">
+  <span class="sec-eyebrow" data-i18n="faqEye">שאלות נפוצות</span>
+  <h2 data-i18n="faqH2">מה שחשוב לדעת לפני שמתחילים.</h2>
+  <div class="faq">
+    <details><summary data-i18n="faqQ1">האם צריך כרטיס אשראי כדי להתחיל?</summary><p data-i18n="faqA1">לא. הניסיון הוא 14 יום מלאים בלי כרטיס אשראי. פרטי התשלום נמסרים רק אם בוחרים להמשיך.</p></details>
+    <details><summary data-i18n="faqQ2">מה קורה בסוף הניסיון?</summary><p data-i18n="faqA2">בוחרים אחד משלושת המסלולים. אם לא בוחרים — החשבון ננעל, והנתונים נשמרים 30 יום למקרה שתחזרו.</p></details>
+    <details><summary data-i18n="faqQ3">אפשר לעבור בין מסלולים?</summary><p data-i18n="faqA3">כן, בכל עת ובאופן עצמאי מתוך לשונית "חשבון" — למעלה או למטה.</p></details>
+    <details><summary data-i18n="faqQ4">איך מבטלים?</summary><p data-i18n="faqA4">בלחיצה אחת מתוך המערכת, בלי לדבר עם אף אחד. הגישה נמשכת עד סוף התקופה ששולמה.</p></details>
+    <details><summary data-i18n="faqQ5">אפשר להעביר את המועמדים שכבר יש לי?</summary><p data-i18n="faqA5">כן. ייבוא מקובץ CSV או אקסל, וגם ייצוא של כל הנתונים החוצה בכל רגע — המידע שלכם נשאר שלכם.</p></details>
+    <details><summary data-i18n="faqQ6">המידע של המועמדים מאובטח?</summary><p data-i18n="faqA6">המערכת בנויה עם הפרדת הרשאות ברמת בסיס הנתונים, כך שכל מגייס רואה רק את המועמדים שלו. פרטי אשראי לא נשמרים אצלנו כלל.</p></details>
+  </div>
 </section>
 
 <!-- ═══════ צור קשר ═══════ -->
@@ -599,7 +636,8 @@ html[lang=en] body{--x:0}
   <div class="final">
     <h2 data-i18n="finalH2">המועמד הבא שלך כבר מחכה בקישור.</h2>
     <p data-i18n="finalP">הרשמה של דקה, מאגר מסודר לכל החיים.</p>
-    <a class="btn btn-white" href="https://app.prelio.work/" data-i18n="finalBtn">פתיחת חשבון בחינם</a>
+    <a class="btn btn-white" href="https://app.prelio.work/" data-i18n="finalBtn">התחילו 14 יום ניסיון</a>
+    <p class="cta-micro on-dark" data-i18n="ctaMicro2">14 יום ניסיון · בלי כרטיס אשראי · ביטול בכל עת</p>
   </div>
 </div>
 
@@ -686,7 +724,7 @@ html[lang=en] body{--x:0}
     eyebrow:'\u2726 Built by a recruiter, for recruiters',
     h1:'From first application to placement.<br><em>All in one place.</em>',
     sub:'Prelio is a simple, smart recruiting CRM: an organized candidate pool, reminders that never slip, a public link for every job, and an AI assistant that ranks the best matches for you.',
-    ctaStart:'Start for free',ctaHow:'How it works',
+    ctaStart:'Start your 14-day trial',ctaHow:'How it works',
     trust1:'<i class="ok">\u2713</i> 14-day free Pro trial',trust2:'<i class="ok">\u2713</i> No credit card needed',trust3:'<i class="ok">\u2713</i> Hebrew &amp; English, any device',
     howEye:'THE SYSTEM IN ACTION',howH2:'A working day with Prelio.',
     howLead:'Four moments from the day: an application that arrives on its own, a follow-up that is never missed, AI ranking, and a closed placement.',
@@ -705,27 +743,44 @@ html[lang=en] body{--x:0}
     feat2:'<b>No candidate is forgotten</b><p>Set a callback date and the system reminds you. Today\u2019s urgent items wait at the top of the screen.</p>',
     feat3:'<b>AI match ranking in one click</b><p>Paste job requirements or click an existing job, and get the best matches, ranked and explained.</p>',
     feat4:'<b>A personal link and a link per job</b><p>Candidates fill in their own details from their phone, CV included, straight into your pool. Duplicates are detected automatically.</p>',
-    feat5:'<b>An AI assistant on every screen</b><p>A free help bot on every screen — answers "how do I…" and jumps you straight to the right place.</p>',
+    feat5:'<b>An AI assistant on every screen</b><p>A built-in help bot on every screen, on every plan — answers "how do I…" and jumps you straight to the right place.</p>',
     feat6:'<b>Interactive guided tour</b><p>A step-by-step guide to every capability — with a "take me there" button that jumps straight to the feature.</p>',
     feat7:'<b>A full customer account</b><p>Manage your subscription, switch plans, view invoices and replace your payment method — all from inside the app.</p>',
     feat8:'<b>Public forms with rich previews</b><p>An intake link for every job — with a designed preview card when shared on WhatsApp and Facebook.</p>',
     feat9:'<b>Automatic confirmation emails</b><p>A candidate who leaves an email gets a branded confirmation automatically — and their reply comes straight back to you.</p>',
     feat10:'<b>Smart status sync</b><p>Four base statuses across the whole process, plus your own personal statuses — each with its color.</p>',
     feat11:'<b>Audit log &amp; security</b><p>A full action log and row-level security (RLS) — every agent’s data is isolated and protected.</p>',
-    priceEye:'PRICING',priceH2:'Pick a plan. Change it whenever you want.',
-    priceLead:'Every new user gets a full 14-day trial, no credit card needed.',
+    priceEye:'PRICING',priceH2:'Plans &amp; pricing',
+    priceLead:'Every plan includes a 14-day trial, no credit card.',
     p1n:'Start',perMonth0:'/ month',p1btn:'Choose Start',
-    p1f:'<li>100 candidates</li><li>100 AI runs a month</li><li>5 public jobs</li><li>Intake form, follow-ups, import &amp; export</li>',
-    hotTag:'Best value',p2n:'Pro',perMonth1:'/ month',p2btn:'Choose Pro',
-    p2f:'<li>250 candidates</li><li>250 AI runs a month</li><li>10 public jobs</li><li>Everything in Start <b>+ WhatsApp templates</b></li>',
+    p1for:'For a recruiter starting out, or running a small pool.',
+    p1f:'<li>Up to 100 candidates</li><li>100 AI runs a month</li><li>5 jobs with a public link</li><li>Public intake form</li><li>Follow-up reminders</li><li>CSV import &amp; export</li><li>Help bot and user guide</li>',
+    hotTag:'Most popular',p2n:'Pro',perMonth1:'/ month',p2btn:'Choose Pro',
+    p2for:'For an active recruiter working with several employers.',
+    p2f:'<li class="inherit">Everything in Start, plus:</li><li>Up to 250 candidates</li><li>250 AI runs a month</li><li>10 jobs with a public link</li><li><b>WhatsApp templates</b> — up to 15 templates with auto-fill and a fixed signature</li>',
     p3n:'Ultra',perMonth2:'/ month',p3btn:'Choose Ultra',
-    p3f:'<li>1,000 candidates</li><li>750 AI runs a month</li><li>20 public jobs</li><li>For agencies &amp; heavy recruiters</li>',
-    priceNote:'All plans bill monthly on a recurring basis and include every update. Cancel anytime from inside the app — access is kept until the end of the paid period.',
-    vatNote:'Prices are subject to VAT where applicable.',
+    p3for:'For anyone running a large pool and high recruiting volume.',
+    p3f:'<li class="inherit">Everything in Pro, plus:</li><li>Up to 1,000 candidates</li><li>750 AI runs a month</li><li>20 jobs with a public link</li>',
+    disclosure:'The subscription renews automatically each month. You can cancel at any time from inside the app, and access continues until the end of the paid period. After cancellation, data is kept for 30 days and then permanently deleted. Prices are subject to VAT where applicable. Payments are processed by Cardcom — card details are stored with them, not with us.',
+    ctaMicro:'14-day trial · No credit card · Cancel anytime',
+    ctaMicro2:'14-day trial · No credit card · Cancel anytime',
+    faqEye:'FAQ',faqH2:'What matters before you start.',
+    faqQ1:'Do I need a credit card to start?',
+    faqA1:'No. The trial is a full 14 days with no credit card. Payment details are only provided if you choose to continue.',
+    faqQ2:'What happens at the end of the trial?',
+    faqA2:'You pick one of the three plans. If you don’t, the account locks and your data is kept for 30 days in case you come back.',
+    faqQ3:'Can I switch between plans?',
+    faqA3:'Yes, at any time and on your own, from the "Account" tab — up or down.',
+    faqQ4:'How do I cancel?',
+    faqA4:'One click from inside the app, without talking to anyone. Access continues until the end of the paid period.',
+    faqQ5:'Can I bring over the candidates I already have?',
+    faqA5:'Yes. Import from a CSV or Excel file, and export all of your data at any moment — your information stays yours.',
+    faqQ6:'Is candidate data secure?',
+    faqA6:'The system is built with permission separation at the database level, so each recruiter sees only their own candidates. Card details are never stored with us.',
     cEye:'INTERESTED? TALK TO US',cH2:'We\u2019d love to hear from you.',
     cLead:'A question, a demo request, or just checking if Prelio fits you — leave your details and we\u2019ll get back to you. This form, by the way, runs on Prelio itself \ud83d\ude09',
     cName:'Full name *',cPhone:'Phone *',cEmail:'Email',cMsg:'What are you interested in?',cSend:'Send',
-    finalH2:'Your next candidate is already waiting behind a link.',finalP:'One-minute signup, an organized pool for life.',finalBtn:'Open a free account',
+    finalH2:'Your next candidate is already waiting behind a link.',finalP:'One-minute signup, an organized pool for life.',finalBtn:'Start your 14-day trial',
     fPriv:'Privacy policy',fTerms:'Terms of use',fContact:'Contact us'
   };
   const heCache={};
