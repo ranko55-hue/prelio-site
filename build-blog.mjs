@@ -152,25 +152,39 @@ ${FOOT}
 </html>`;
 }
 
+/* --- ogImage → absolute URL (frontmatter `ogImage`, legacy `cover`, else fallback) --- */
+function ogUrl(meta) {
+  const v = meta.ogImage || meta.cover;
+  if (!v) return OG_FALLBACK;
+  return String(v).startsWith('http') ? String(v) : SITE + (String(v).startsWith('/') ? v : '/' + v);
+}
+
 /* --- collect posts --- */
+/* frontmatter: title, description, slug, date, author, keywords[], ogImage, published
+   `slug` overrides the filename; `published: false` keeps a draft out of the build. */
 const dir = join(ROOT, 'content', 'blog');
 const posts = readdirSync(dir).filter(f => f.endsWith('.md')).map(f => {
-  const slug = f.replace(/\.md$/, '');
   const { meta, body } = parseFront(readFileSync(join(dir, f), 'utf8'));
+  const slug = String(meta.slug || f.replace(/\.md$/, '')).trim();
   return { slug, meta, body, html: mdToHtml(body), rt: readingTime(body) };
-}).sort((a, b) => String(b.meta.date).localeCompare(String(a.meta.date)));
+})
+  .filter(p => String(p.meta.published ?? 'true').toLowerCase() !== 'false')
+  .sort((a, b) => String(b.meta.date).localeCompare(String(a.meta.date)));
 
 /* --- post pages --- */
 for (const p of posts) {
   const url = `${SITE}/blog/${p.slug}/`;
-  const cover = p.meta.cover && String(p.meta.cover).startsWith('http') ? p.meta.cover : (p.meta.cover ? SITE + p.meta.cover : OG_FALLBACK);
+  const cover = ogUrl(p.meta);
   const canonical = p.meta.canonical || url;
+  const author = String(p.meta.author || 'Prelio').trim();
   const ld = {
     '@context': 'https://schema.org', '@type': 'Article',
     headline: p.meta.title, description: p.meta.description,
     datePublished: p.meta.date, dateModified: p.meta.date,
     image: cover, inLanguage: 'he',
-    author: { '@type': 'Organization', name: 'Prelio' },
+    author: author === 'Prelio'
+      ? { '@type': 'Organization', name: 'Prelio' }
+      : { '@type': 'Person', name: author },
     publisher: { '@type': 'Organization', name: 'Prelio', logo: { '@type': 'ImageObject', url: LOGO } },
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
     keywords: Array.isArray(p.meta.keywords) ? p.meta.keywords.join(', ') : (p.meta.keywords || ''),
@@ -197,7 +211,7 @@ for (const p of posts) {
 
 /* --- index page --- */
 const cards = posts.map(p => {
-  const cover = p.meta.cover && String(p.meta.cover).startsWith('http') ? p.meta.cover : (p.meta.cover ? SITE + p.meta.cover : OG_FALLBACK);
+  const cover = ogUrl(p.meta);
   return `<div class="card"><a href="/blog/${p.slug}/">
     <div class="card-cover" style="background-image:url('${esc(cover)}')"></div>
     <div class="card-body"><div class="card-meta">${fmtDate(p.meta.date)} · ${p.rt} דק׳</div><h2>${esc(p.meta.title)}</h2><p>${esc(p.meta.description)}</p></div>
@@ -216,3 +230,25 @@ writeFileSync(join(ROOT, 'blog', 'index.html'), page({
   content: indexContent,
 }));
 console.log('index: /blog/  · total posts:', posts.length);
+
+/* --- sitemap.xml — static pages + /blog + every published post (lastmod = post date) --- */
+const newest = posts.length ? String(posts[0].meta.date) : '';
+const STATIC = [
+  { loc: `${SITE}/`, changefreq: 'weekly', priority: '1.0' },
+  { loc: `${SITE}/blog/`, changefreq: 'weekly', priority: '0.8', lastmod: newest },
+  { loc: `${SITE}/privacy.html`, changefreq: 'yearly', priority: '0.3' },
+  { loc: `${SITE}/terms.html`, changefreq: 'yearly', priority: '0.3' },
+  { loc: `${SITE}/accessibility.html`, changefreq: 'yearly', priority: '0.3' },
+];
+const entries = [
+  ...STATIC.slice(0, 2),
+  ...posts.map(p => ({ loc: `${SITE}/blog/${p.slug}/`, changefreq: 'monthly', priority: '0.7', lastmod: String(p.meta.date || '') })),
+  ...STATIC.slice(2),
+];
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${entries.map(e => `  <url><loc>${e.loc}</loc>${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ''}<changefreq>${e.changefreq}</changefreq><priority>${e.priority}</priority></url>`).join('\n')}
+</urlset>
+`;
+writeFileSync(join(ROOT, 'sitemap.xml'), sitemap);
+console.log('sitemap: /sitemap.xml ·', entries.length, 'urls');
