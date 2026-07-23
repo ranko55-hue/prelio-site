@@ -100,7 +100,8 @@ nav{position:sticky;top:0;z-index:20;background:rgba(251,250,255,.9);backdrop-fi
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -18px rgba(104,76,190,.3)}
 .card a{text-decoration:none;color:inherit;display:flex;flex-direction:column;height:100%}
-.card-cover{aspect-ratio:1200/630;background:var(--brand-soft) center/cover}
+/* full 1200x630, never cropped: contain + matching ratio, no fixed height */
+.card-cover{aspect-ratio:1200/630;background:var(--brand-soft) center/contain no-repeat}
 .card-body{padding:16px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card-body h2{font-size:19px}
 .card-body p{color:var(--muted);font-size:14.5px;flex:1}
@@ -108,8 +109,7 @@ nav{position:sticky;top:0;z-index:20;background:rgba(251,250,255,.9);backdrop-fi
 /* article */
 article{padding:34px 0 40px}
 .post-meta{color:#a79db5;font-size:13.5px;font-weight:600;margin-bottom:10px}
-article h1{font-size:clamp(26px,4vw,38px);margin-bottom:14px}
-.post-cover{width:100%;aspect-ratio:1200/630;object-fit:cover;border-radius:16px;margin:14px 0 26px}
+article h1{font-size:clamp(26px,4vw,38px);margin-bottom:24px}
 .post-body>*{margin-bottom:16px}
 .post-body h2{font-size:24px;margin-top:30px}
 .post-body h3{font-size:19px;margin-top:22px;color:var(--brand-dark)}
@@ -205,7 +205,8 @@ for (const p of posts) {
   <a class="back" href="/blog/">← חזרה לבלוג</a>
   <div class="post-meta">${fmtDate(p.meta.date)} · ${p.rt} דק׳ קריאה</div>
   <h1>${esc(p.meta.title)}</h1>
-  <img class="post-cover" src="${esc(cover)}" alt="${esc(p.meta.title)}" fetchpriority="high" width="1200" height="630">
+  <!-- OG card is metadata only: it has text baked in at fixed positions, so any
+       on-page crop destroys it. The H1 above already states the same headline. -->
   <div class="post-body">${p.html}</div>
   <div class="share" aria-label="שיתוף">
     <a href="https://wa.me/?text=${shareText}%20${encodeURIComponent(url)}" target="_blank" rel="noopener">וואטסאפ</a>
