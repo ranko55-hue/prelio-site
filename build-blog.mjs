@@ -19,16 +19,24 @@ const LOGO = 'https://prelio.work/og-cover.png';
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 /* --- frontmatter --- */
+const unquote = s => String(s).trim().replace(/^["'](.*)["']$/s, '$1');
+
 function parseFront(raw) {
   const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!m) return { meta: {}, body: raw };
   const meta = {};
+  let listKey = null;                       // open YAML block-list, e.g. `keywords:` + `- item` lines
   for (const line of m[1].split(/\r?\n/)) {
+    const item = line.match(/^\s*-\s+(.*)$/);
+    if (item && listKey) { meta[listKey].push(unquote(item[1])); continue; }
     const mm = line.match(/^(\w+):\s*(.*)$/);
     if (!mm) continue;
     let [, k, v] = mm;
     v = v.trim();
-    if (v.startsWith('[') && v.endsWith(']')) v = v.slice(1, -1).split(',').map(s => s.trim()).filter(Boolean);
+    if (v === '') { listKey = k; meta[k] = []; continue; }   // bare key → block list follows
+    listKey = null;
+    if (v.startsWith('[') && v.endsWith(']')) v = v.slice(1, -1).split(',').map(s => unquote(s)).filter(Boolean);
+    else v = unquote(v);
     meta[k] = v;
   }
   return { meta, body: m[2] };
