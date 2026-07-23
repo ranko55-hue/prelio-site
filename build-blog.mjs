@@ -165,7 +165,10 @@ function ogUrl(meta) {
 const dir = join(ROOT, 'content', 'blog');
 const posts = readdirSync(dir).filter(f => f.endsWith('.md')).map(f => {
   const { meta, body } = parseFront(readFileSync(join(dir, f), 'utf8'));
-  const slug = String(meta.slug || f.replace(/\.md$/, '')).trim();
+  /* normalise: accept `slug`, `/blog/slug`, `slug/` — always emit the bare segment,
+     so canonical / og:url / sitemap stay in ONE trailing-slash form. */
+  const slug = String(meta.slug || f.replace(/\.md$/, ''))
+    .trim().replace(/^\/+/, '').replace(/^blog\//, '').replace(/\/+$/, '');
   return { slug, meta, body, html: mdToHtml(body), rt: readingTime(body) };
 })
   .filter(p => String(p.meta.published ?? 'true').toLowerCase() !== 'false')
