@@ -48,7 +48,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;800&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f9f7fd; --bg2:#f6f3fa; --ink:#2d2438; --muted:#6b6178; --brand:#9270fc; --brand-dark:#7d55f0; --brand2:#f52ac9; --grad:linear-gradient(135deg,#f52ac9 0%,#b263f7 55%,#9270fc 100%);
+  --bg:#f9f7fd; --bg2:#f6f3fa; --ink:#2d2438; --muted:#6b6178; --brand:#9270fc; --brand-dark:#7d55f0; --brand2:#f52ac9; --grad:linear-gradient(135deg,#c21d9a 0%,#9b3fd4 55%,#7d55f0 100%);
   --brand-soft:#f8f1fe; --line:#ece6f2; --card:#ffffff;
   --chip-blue-bg:#e3edfa; --chip-blue:#1e5a99; --chip-green-bg:#eaf3de; --chip-green:#3b6d11;
   --chip-orange-bg:#fbeadd; --chip-orange:#a15c1f; --chip-purple-bg:#ece4f7; --chip-purple:#6a45a8;
@@ -78,8 +78,20 @@ nav{position:sticky;top:0;z-index:50;background:rgba(251,250,255,.85);backdrop-f
 .nav-links{display:flex;gap:24px;margin-inline-start:auto;align-items:center}
 .nav-links>a{text-decoration:none;font-weight:600;font-size:14.5px;color:var(--muted);transition:color .15s}
 .nav-links>a:hover{color:var(--ink)}
-.nav-cta{padding:9px 20px;font-size:14px}
+/* הכפתור "כניסה למערכת" הוא <a> בתוך .nav-links, ולכן .nav-links>a (0,1,1) גבר על
+   .btn-brand{color:#fff} (0,1,0) והטקסט נצבע באפור עמום — ניגודיות ~1.7:1, בלתי קריא.
+   מאלצים לבן בסלקטור ספציפי יותר; על הגרדיאנט הכהה החדש הניגודיות ≥4.74:1 (AA). */
+.nav-links>a.btn-brand{color:#fff}
+.nav-cta{padding:9px 20px;font-size:14px;white-space:nowrap;flex-shrink:0}
 @media(max-width:700px){.nav-links a.hideS{display:none}}
+/* מובייל: שורת הניווט לא נכנסת ברוחב צר — הכפתור (הילד האחרון, בקצה השמאלי ב-RTL)
+   נחתך ע"י overflow-x:clip. נותנים ל-nav-links לעבור לשורה שנייה + צמצום מרווחים,
+   כך שהתווית מוצגת במלואה בכל רוחב. */
+@media(max-width:560px){
+  .nav-in{flex-wrap:wrap;gap:10px 12px}
+  .nav-links{flex-wrap:wrap;justify-content:flex-end;gap:10px 13px}
+  .nav-cta{padding:8px 14px;font-size:13px}
+}
 
 /* ───── פתיח ───── */
 .hero{position:relative;padding:76px 0 40px}
@@ -201,6 +213,7 @@ nav{position:sticky;top:0;z-index:50;background:rgba(251,250,255,.85);backdrop-f
 .feat .chip{margin-bottom:14px}
 .feat b{display:block;font-family:'Rubik';font-weight:600;font-size:16px;margin-bottom:6px}
 .feat p{font-size:14px;color:var(--muted)}
+.feat-plan{display:inline-block;font-family:'Assistant',sans-serif;font-size:11px;font-weight:700;color:var(--brand-dark);background:var(--brand-soft);border-radius:10px;padding:2px 9px;margin-inline-start:6px;vertical-align:middle}
 
 /* ───── מחירים ───── */
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;align-items:stretch}
@@ -338,7 +351,7 @@ html[lang=en] body{--x:0}
       </div>
       <p class="cta-micro" data-i18n="ctaMicro">14 יום ניסיון · בלי כרטיס אשראי · ביטול בכל עת</p>
       <div class="hero-trust">
-        <span data-i18n="trust1"><i class="ok">✓</i> 14 ימי Pro מתנה לכל נרשם</span>
+        <span data-i18n="trust1"><i class="ok">✓</i> 14 יום ניסיון</span>
         <span data-i18n="trust2"><i class="ok">✓</i> בלי כרטיס אשראי</span>
         <span data-i18n="trust3"><i class="ok">✓</i> בעברית ובאנגלית, מכל מכשיר</span>
       </div>
@@ -536,6 +549,7 @@ html[lang=en] body{--x:0}
     <div class="feat"><span class="chip" style="background:var(--chip-orange-bg);color:var(--chip-orange)">פולו-אפ</span><span data-i18n="feat2"><b>אף מועמד לא נשכח</b><p>קובעים תאריך חזרה והמערכת מזכירה. מה שדחוף היום מחכה בראש המסך.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">AI</span><span data-i18n="feat3"><b>דירוג התאמה בלחיצה</b><p>מדביקים דרישות משרה או לוחצים על משרה קיימת, ומקבלים את המתאימים ביותר, מדורגים ומנומקים.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-green-bg);color:var(--chip-green)">טפסים</span><span data-i18n="feat4"><b>קישור אישי וקישור לכל משרה</b><p>מועמדים ממלאים לבד מהנייד, כולל קו"ח, ונכנסים ישר למאגר. כפילויות מזוהות אוטומטית.</p></span></div>
+    <div class="feat"><span class="chip" style="background:var(--chip-green-bg);color:var(--chip-green)">וואטסאפ</span><span data-i18n="feat12"><b>תבניות וואטסאפ <span class="feat-plan">פרו ומעלה</span></b><p>עד 15 תבניות מוכנות עם מילוי אוטומטי של שם ומשרה וחתימה קבועה — ההודעה נפתחת בוואטסאפ מהטלפון בשתי נגיעות.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">עוזר AI</span><span data-i18n="feat5"><b>עוזר AI זמין מכל מסך</b><p>בוט עזרה מובנה בכל מסך במערכת, בכל המסלולים — עונה בעברית על "איך עושים" ומקפיץ אותך ישר למקום הנכון.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">מדריך</span><span data-i18n="feat6"><b>סיור מודרך אינטראקטיבי</b><p>מדריך צעד-אחר-צעד שמסביר כל יכולת — עם כפתור "קח אותי לשם" שקופץ ישר לפיצ'ר.</p></span></div>
     <div class="feat"><span class="chip" style="background:var(--chip-purple-bg);color:var(--chip-purple)">חשבון</span><span data-i18n="feat7"><b>חשבון לקוח מלא</b><p>ניהול המנוי, החלפת חבילה, צפייה בחשבוניות והחלפת אמצעי תשלום — הכול מתוך המערכת.</p></span></div>
@@ -725,7 +739,7 @@ html[lang=en] body{--x:0}
     h1:'From first application to placement.<br><em>All in one place.</em>',
     sub:'Prelio is a simple, smart recruiting CRM: an organized candidate pool, reminders that never slip, a public link for every job, and an AI assistant that ranks the best matches for you.',
     ctaStart:'Start your 14-day trial',ctaHow:'How it works',
-    trust1:'<i class="ok">\u2713</i> 14-day free Pro trial',trust2:'<i class="ok">\u2713</i> No credit card needed',trust3:'<i class="ok">\u2713</i> Hebrew &amp; English, any device',
+    trust1:'<i class="ok">\u2713</i> 14-day trial',trust2:'<i class="ok">\u2713</i> No credit card needed',trust3:'<i class="ok">\u2713</i> Hebrew &amp; English, any device',
     howEye:'THE SYSTEM IN ACTION',howH2:'A working day with Prelio.',
     howLead:'Four moments from the day: an application that arrives on its own, a follow-up that is never missed, AI ranking, and a closed placement.',
     hs1:'<b>Applications flow in</b><span>From your personal form, straight to the pool, CV included</span>',
@@ -750,6 +764,7 @@ html[lang=en] body{--x:0}
     feat9:'<b>Automatic confirmation emails</b><p>A candidate who leaves an email gets a branded confirmation automatically — and their reply comes straight back to you.</p>',
     feat10:'<b>Smart status sync</b><p>Four base statuses across the whole process, plus your own personal statuses — each with its color.</p>',
     feat11:'<b>Audit log &amp; security</b><p>A full action log and row-level security (RLS) — every agent’s data is isolated and protected.</p>',
+    feat12:'<b>WhatsApp templates <span class="feat-plan">Pro &amp; up</span></b><p>Up to 15 ready templates with auto-filled name and job and a fixed signature — the message opens in WhatsApp from your phone in two taps.</p>',
     priceEye:'PRICING',priceH2:'Plans &amp; pricing',
     priceLead:'Every plan includes a 14-day trial, no credit card.',
     p1n:'Start',perMonth0:'/ month',p1btn:'Choose Start',
